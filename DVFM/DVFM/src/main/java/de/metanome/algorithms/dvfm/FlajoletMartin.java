@@ -34,7 +34,7 @@ public class FlajoletMartin {
   /**
    * Size of the map in bits
    */
-  private int bitmapSize=64; //L 
+  private int bitmapSize=32; //L 
   /**
    * The u=generated hash functions
    */

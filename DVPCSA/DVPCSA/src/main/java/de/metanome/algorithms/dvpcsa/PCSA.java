@@ -20,7 +20,7 @@ public class PCSA {
   /**
    * Size of the map in bits
    */
-  private int bitmapSize=64;
+  private int bitmapSize=32;
   
   private byte[][] bitmaps;
 
@@ -35,7 +35,7 @@ public class PCSA {
     boolean affected = false;    
     if(o!=null){
                //hash the data value to get unsigned value
-                long v=MurmurHash.hash64(o);
+                long v=MurmurHash.hash(o);
                 //System.out.println(Long.toBinaryString(v));
                 int vectorindex =(int)Long.remainderUnsigned(v, numvectors);
                 long lowpart=Long.divideUnsigned(v, numvectors);

@@ -28,7 +28,7 @@ public class DVAMS extends DVAMSAlgorithm implements BasicStatisticsAlgorithm, R
 		conf.add(new ConfigurationRequirementRelationalInput(DVAMS.Identifier.INPUT_GENERATOR.name()));
 		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVAMS.Identifier.RATIO_ERROR.name());
         inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
+        String[] Defaults={"3"};
         inputstandard_error.setDefaultValues(Defaults);
         conf.add(inputstandard_error);
         

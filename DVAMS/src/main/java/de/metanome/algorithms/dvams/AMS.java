@@ -3,8 +3,10 @@ package de.metanome.algorithms.dvams;
 
 
 /**
- * * Implementation of AMS * Reference:
- * 
+ * * Implementation of AMS 
+ * *  Reference:
+ *    Alon, N., Matias, Y., & Szegedy, M. (1996, July). The space complexity of approximating the frequency moments. 
+ *    In Proceedings of the twenty-eighth annual ACM symposium on Theory of computing (pp. 20-29). ACM.
  * * @author Hazar.Harmouch
  */
 

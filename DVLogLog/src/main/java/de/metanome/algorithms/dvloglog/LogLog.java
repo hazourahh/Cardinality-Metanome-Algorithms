@@ -1,5 +1,7 @@
 package de.metanome.algorithms.dvloglog;
 
+
+
 /** Implementation of LogLog
  ** Reference:
  *   Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg.
@@ -25,6 +27,11 @@ public class LogLog {
    * sum of maxs
    */
   private int Rsum = 0;
+  
+  /**
+   * The generated hash functions
+   */
+  private MurmurHash3 HashFunction;
   
   /**
    * correction factors
@@ -87,17 +94,18 @@ public class LogLog {
      }
        this.Ca = mAlpha[Numbits];
        this.M = new byte[numofbucket];
+       HashFunction=MurmurHash3.getInstance();
   }
 
   public boolean offer(Object o) {
     boolean affected = false;    
     if(o!=null){
                //hash the data value to get unsigned value
-                int v=MurmurHash.hash(o);
+                long v=HashFunction.hash64(o);
                 // get the first k bit to determine the bucket 
-                int j = v >>> (Integer.SIZE - Numbits);
+                int j =(int)v >>> (Long.SIZE - Numbits);
                 // calculating rho(bk+1,bk+2 ....)
-                byte r = (byte) (Integer.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
+                byte r = (byte) (Long.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
                 // get the max rho
                 if (M[j] < r) {
                     Rsum += r - M[j];

@@ -24,6 +24,7 @@ package de.metanome.algorithms.dvpcsa;
 
 
 
+
 import java.nio.charset.Charset;
 import java.util.Arrays;
 
@@ -42,12 +43,12 @@ import java.util.Arrays;
  * @since 5.0
  */
 
-public class MurmurHash{
+public class MurmurHash3 {
    private static final Charset UTF8 = Charset.forName("UTF-8");
    
-   private static MurmurHash _instance = new MurmurHash();
+   private static MurmurHash3 _instance = new MurmurHash3();
   
-    public static MurmurHash getInstance() {
+    public static MurmurHash3 getInstance() {
       return _instance;
     }
 
@@ -271,6 +272,7 @@ public class MurmurHash{
       return (int) (MurmurHash3_x64_128(key, seed)[0] >>> 32);
    }
 
+   
    public int hash(byte[] payload) {
       return MurmurHash3_x64_32(payload, 9001);
    }
@@ -305,12 +307,12 @@ public class MurmurHash{
          return hash(o.hashCode());
    }
    
-  
+ 
     public int hash(byte[] bytes, int length, int initval) {
         return MurmurHash3_x64_32(bytes, initval);
     }
 
- 
+  
     public long hash64(Object o) {
         return hash64(o, 9001)[0];
     }

@@ -2,6 +2,8 @@ package de.metanome.algorithms.dvsuperloglog;
 
 import java.util.Arrays;
 
+
+
 /** Implementation of SuperLogLog
  ** Reference:
  *   Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg.
@@ -33,76 +35,33 @@ public class SuperLogLog {
   private int Rsum = 0;
   
   /**The maximum cardinality*/
-  private double Nmax=Math.pow(10, 8);
+  private double Nmax=Math.pow(10, 19);
   
   /**
-   * Restrection Rule**/
+   * Restriction Rule**/
   private double B;
   
   /**
-   * correction factors
-   * page 5 of the original paper: Alpha=(Gamma[-1/m]*(1 - 2^(1/m))/Log[2])^-m 
-   * mAlpha=m* Alpha
-   * E= mAlpha * 2^(average of M for all the buckets)
-   * Gamma function computed using Mathematical AccountingForm
-   * [ N
-   *    [With
-   *      [{m = 2^Range[0, 31]},
-   *       m (Gamma[-1/m]*(1 - 2^(1/m))/Log[2])^-m
-   *       ], 
-   *    14
-   *    ]
-   * ]
+   * Correction function
    */
-  protected static final double[] mAlpha = {
-          0,
-          0.44567926005415,
-          1.2480639342271,
-          2.8391255240079,
-          6.0165231584809,
-          12.369319965552,
-          25.073991603111,
-          50.482891762408,
-          101.30047482584,
-          202.93553338100,
-          406.20559696699,
-          812.74569744189,
-          1625.8258850594,
-          3251.9862536323,
-          6504.3069874480,
-          13008.948453415,
-          26018.231384516,
-          52036.797246302,
-          104073.92896967,
-          208148.19241629,
-          416296.71930949,
-          832593.77309585,
-          1665187.8806686,
-          3330376.0958140,
-          6660752.5261049,
-          13321505.386687,
-          26643011.107850,
-          53286022.550177,
-          106572045.43483,
-          213144091.20414,
-          426288182.74275,
-          852576365.81999
-  };
-  private double Ca;
-  
+    private double Ca;
+    private final double ca1=0.79402;
+    private final double ca2=0.84249;
+  /**
+   * The generated hash functions
+   */
+  private MurmurHash3 HashFunction;
+
 
 
   public SuperLogLog(double error) {  
        this.numofbucket =BitUtil.roundPowerOf2(Math.pow(1.05/error, 2));
        this.Numbits=(int) (Math.log(numofbucket)/Math.log(2));
-       if (Numbits >= (mAlpha.length - 1)) {
-         throw new IllegalArgumentException(String.format("Max k (%d) exceeded: k=%d", mAlpha.length - 1, Numbits));
-     }
-       
+       HashFunction=MurmurHash3.getInstance();
        this.M = new byte[numofbucket];
        //truncation rule parameters
        this.truncatednumofbucket=(int)Math.floor(0.7*numofbucket);
-       this.Ca = mAlpha[Numbits]/numofbucket * truncatednumofbucket;
+       this.Ca = ca1* truncatednumofbucket-ca2;
        
        //restriction Rule parameters
        B=Math.ceil(Math.log(Nmax/numofbucket)/Math.log(2)+3);
@@ -112,13 +71,14 @@ public class SuperLogLog {
     boolean affected = false;    
     if(o!=null){
                //hash the data value to get unsigned value
-                int v=MurmurHash.hash(o);
+                long v=HashFunction.hash64(o);
                 // get the first k bit to determine the bucket 
-                int j = v >>> (Integer.SIZE - Numbits);
+             // get the first k bit to determine the bucket 
+                int j =(int)(v >>> (Long.SIZE - Numbits));
                 // calculating rho(bk+1,bk+2 ....)
-                byte r = (byte) (Integer.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
+                byte r = (byte) (Long.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
                 // get the max rho
-                if (M[j] < r) {
+               if (M[j] < r) {
                     M[j] = r;
                     affected = true;
                 }           
@@ -136,7 +96,6 @@ public class SuperLogLog {
        if(M[j]>0 && M[j]<B)
         Rsum+=M[j];// the trancated sum
     double Ravg = Rsum / (double) truncatednumofbucket;
-   // return (long) (Ca * Math.pow(2, Ravg));
-    return (long) (1.09295* truncatednumofbucket* Math.pow(2, Ravg));
+    return (long) Math.floor(Ca* Math.pow(2, Ravg));
 }
   }

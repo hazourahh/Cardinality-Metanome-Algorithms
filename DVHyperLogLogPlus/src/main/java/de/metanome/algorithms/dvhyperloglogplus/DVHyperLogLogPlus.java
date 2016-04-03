@@ -1,4 +1,4 @@
-package de.metanome.algorithms.dvhyperloglog;
+package de.metanome.algorithms.dvhyperloglogplus;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,7 @@ import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 
 
-public class DVHyperLogLog extends DVHyperLogLogAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm  {
+public class DVHyperLogLogPlus extends DVHyperLogLogAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm  {
 
 	public enum Identifier {
 		INPUT_GENERATOR,
@@ -25,8 +25,8 @@ public class DVHyperLogLog extends DVHyperLogLogAlgorithm implements BasicStatis
 	@Override
 	public ArrayList<ConfigurationRequirement<?>> getConfigurationRequirements() {
 		ArrayList<ConfigurationRequirement<?>> conf = new ArrayList<>();
-		conf.add(new ConfigurationRequirementRelationalInput(DVHyperLogLog.Identifier.INPUT_GENERATOR.name()));
-		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVHyperLogLog.Identifier.STANDARD_ERROR.name());
+		conf.add(new ConfigurationRequirementRelationalInput(DVHyperLogLogPlus.Identifier.INPUT_GENERATOR.name()));
+		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVHyperLogLogPlus.Identifier.STANDARD_ERROR.name());
         inputstandard_error.setRequired(false);
         String[] Defaults={"0.1"};
         inputstandard_error.setDefaultValues(Defaults);
@@ -44,8 +44,8 @@ public class DVHyperLogLog extends DVHyperLogLogAlgorithm implements BasicStatis
 
 	@Override
 	public void setRelationalInputConfigurationValue(String identifier, RelationalInputGenerator... values) throws AlgorithmConfigurationException {
-		if (!DVHyperLogLog.Identifier.INPUT_GENERATOR.name().equals(identifier))
-			throw new AlgorithmConfigurationException("Input generator does not match the expected identifier: " + identifier + " (given) but " + DVHyperLogLog.Identifier.INPUT_GENERATOR.name() + " (expected)");
+		if (!DVHyperLogLogPlus.Identifier.INPUT_GENERATOR.name().equals(identifier))
+			throw new AlgorithmConfigurationException("Input generator does not match the expected identifier: " + identifier + " (given) but " + DVHyperLogLogPlus.Identifier.INPUT_GENERATOR.name() + " (expected)");
 		this.inputGenerator = values[0];
 	}
 
@@ -57,7 +57,7 @@ public class DVHyperLogLog extends DVHyperLogLogAlgorithm implements BasicStatis
 	@Override
 	  public void setStringConfigurationValue(String identifier, String... values)
 	      throws AlgorithmConfigurationException {
-	    if (DVHyperLogLog.Identifier.STANDARD_ERROR.name().equals(identifier))
+	    if (DVHyperLogLogPlus.Identifier.STANDARD_ERROR.name().equals(identifier))
 	    {
 	      if(values!=null && !values[0].equals("") )
 	      {try{
@@ -76,14 +76,14 @@ public class DVHyperLogLog extends DVHyperLogLogAlgorithm implements BasicStatis
 
   @Override
   public String getAuthors() {
-    // TODO Auto-generated method stub
+    
     return "Hazar Harmouch";
   }
 
   @Override
   public String getDescription() {
-    // TODO Auto-generated method stub
-    return "Flajolet Martin Cardinality Estimator. Flajolet, P., & Martin, G. N. (1985). Probabilistic counting algorithms for data base applications. Journal of computer and system sciences, 31(2), 182-209.";
+
+    return "Heule, S., Nunkesser, M., & Hall, A. (2013). HyperLogLog in practice: algorithmic engineering of a state of the art cardinality estimation algorithm. In Proceedings of the 16th International Conference on Extending Database Technology";
   }
 
 }

@@ -1,4 +1,4 @@
-package de.metanome.algorithms.dvhyperloglog;
+package de.metanome.algorithms.dvhyperloglogplus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,18 +30,16 @@ public class DVHyperLogLogAlgorithm {
 	input = this.inputGenerator.generateNewCopy();
     this.relationName = input.relationName();
     this.columnNames = input.columnNames();
-    ArrayList<HyperLogLog> Columns = new ArrayList<HyperLogLog>();
+    ArrayList<HyperLogLogPlus> Columns = new ArrayList<HyperLogLogPlus>();
     for (int i = 0; i < columnNames.size(); i++)
-      Columns.add(new HyperLogLog(eps));
+      Columns.add(new HyperLogLogPlus(4));
      
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();
       for (int i = 0; i < columnNames.size(); i++)
-        try{
+       
            Columns.get(i).offer(CurrentTuple.get(i));
-        }catch (Exception e) {
-          // TODO: handle exception
-        }
+      
 		
 	}
   

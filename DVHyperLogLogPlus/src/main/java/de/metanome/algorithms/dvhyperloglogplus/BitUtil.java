@@ -1,4 +1,5 @@
-package de.metanome.algorithms.dvhyperloglog;
+package de.metanome.algorithms.dvhyperloglogplus;
+
 
 
 import java.nio.ByteBuffer;
@@ -32,7 +33,16 @@ public class BitUtil {
     return b;
   }
 
-  
+  public static int roundPowerOf2(final double a) {
+    int b = 1;
+    while (b < a) {
+      b = b << 1;
+    }
+    int b1=(int) (Math.log(b)/Math.log(2));
+    return (int) Math.pow(2, b1-1);
+  }
+
+
   
   public static long getUnsignedInt(int x) {
     return x & 0x00000000ffffffffL;
@@ -44,8 +54,8 @@ public class BitUtil {
   
   
   
-   /**position of the least significant 1-bit in the binary representation of y, with a suitable convention for pi(O)=0
-   * pi(y) =min bit( y, k) != 0 if y>O
+   /**position of the least significant 1-bit in the binary representation of y, with a suitable convention for rho(O)=0
+   * rho(y) =min bit( y, k) != 0 if y>O
    *=L if y = 0.
    * 
    * */
@@ -62,6 +72,7 @@ public static int rho(long v)
   }
   return rho == 64 ? 0 : rho;
 }
+
 
 public static int LSBZero(byte[] data) {
   int sizeinbit = 8 * data.length;

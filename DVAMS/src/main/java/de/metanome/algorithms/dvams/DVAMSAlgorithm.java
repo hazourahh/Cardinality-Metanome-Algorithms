@@ -37,11 +37,7 @@ public class DVAMSAlgorithm {
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();
       for (int i = 0; i < columnNames.size(); i++)
-        try{
            Columns.get(i).offer(CurrentTuple.get(i));
-        }catch (Exception e) {
-          // TODO: handle exception
-        }
 		
 	}
   

@@ -103,7 +103,7 @@ public class LogLog {
                //hash the data value to get unsigned value
                 long v=HashFunction.hash64(o);
                 // get the first k bit to determine the bucket 
-                int j =(int)v >>> (Long.SIZE - Numbits);
+                int j =(int)(v >>> (Long.SIZE - Numbits));
                 // calculating rho(bk+1,bk+2 ....)
                 byte r = (byte) (Long.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
                 // get the max rho

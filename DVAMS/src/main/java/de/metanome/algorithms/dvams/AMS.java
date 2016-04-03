@@ -28,7 +28,7 @@ public class AMS {
       long v = HashFunction.hash64(o);
       // calculating the position of the most significant bit that set to 1 in the final bitmap but
       // while we do not save bitmap so we save the max trailing zero number over all the traffic
-      int r = Long.numberOfTrailingZeros(v);
+      int r = Long.numberOfLeadingZeros(v)+1;
       if (R < r) {
         R = r;
         affected = true;

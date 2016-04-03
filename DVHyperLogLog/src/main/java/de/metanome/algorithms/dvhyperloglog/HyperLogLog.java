@@ -1,62 +1,89 @@
 package de.metanome.algorithms.dvhyperloglog;
 
-/**
- * Reference:
- *   Flajolet, Philippe, and G. Nigel Martin. "Probabilistic counting algorithms
- *   for data base applications." Journal of computer and system sciences 31.2 
- *   (1985): 182-209.
+
+
+/** Implementation of HyperLogLog
+ ** Reference:
+ *  Flajolet, P., Fusy, É., Gandouet, O., & Meunier, F. (2008). Hyperloglog: the analysis of a near-optimal cardinality estimation algorithm. DMTCS Proceedings, (1).
+ * * @author Hazar.Harmouch
+ * *  source with modification: https://github.com/addthis/stream-lib
  */
 public class HyperLogLog {
-  /**
-   * correction factor
-   */
-  private static final double PHI = 0.77351D;
-  /**
-   * Number of vectors
-   */
-  private int numvectors=64;
-  /**
-   * Size of the map in bits
-   */
-  private int bitmapSize=64;
+ 
+  private final RegisterSet registerSet;
+  private final int log2m;
+  private final double alphaMM;
+  private MurmurHash3 HashFunction;
   
-  private byte[][] bitmaps;
-
+  
   public HyperLogLog(double error) {
-       int sizeinbyte=BitUtil.bit2bytesize(bitmapSize);  
-      // standard error= 1/sqrt(m) => m=(0.78/error)^2  
-       this.numvectors =BitUtil.nextPowerOf2((int)Math.pow(0.78/error, 2));
-       bitmaps = new byte[numvectors][sizeinbyte];
+    int m =BitUtil.roundPowerOf2(Math.pow(1.04/error, 2));
+    this.log2m  =(int) (Math.log(m)/Math.log(2));
+    validateLog2m(log2m);
+    this.registerSet =new RegisterSet(1 << log2m);
+    int n = 1 << this.log2m;
+    alphaMM = getAlphaMM(log2m, n);
+    HashFunction=MurmurHash3.getInstance();
   }
+  
 
-  public boolean offer(Object o) {
-    boolean affected = false;    
-    if(o!=null){
-               //hash the data value to get unsigned value
-                long v=MurmurHash.hash64(o);
-                //System.out.println(Long.toBinaryString(v));
-                int vectorindex =(int)Long.remainderUnsigned(v, numvectors);
-                long lowpart=Long.divideUnsigned(v, numvectors);
-                int indexinvector=BitUtil.rho(lowpart);
-               // System.out.println(BitUtil.mapAsBitString(bitmaps[vectorindex]));
-                  if(BitUtil.getBit(bitmaps[vectorindex],indexinvector )==0)
-                  BitUtil.setBit(bitmaps[vectorindex],indexinvector,1);
-                affected  = true;
-                
-              }
+private static void validateLog2m(int log2m) {
+    if (log2m < 0 || log2m > 30) {
+        throw new IllegalArgumentException("log2m argument is "
+                                           + log2m + " and is outside the range [0, 30]");
+    }
+}
 
-        return affected;
+public boolean offer(Object o) {
+  boolean affected=false;
+  if(o!=null){
+    final long x = HashFunction.hash64(o);
+    // j becomes the binary address determined by the first b log2m of x
+    // j will be between 0 and 2^log2m
+    final int j = (int) (x >>> (Long.SIZE - log2m));
+    final int r = Long.numberOfLeadingZeros((x << this.log2m) | (1 << (this.log2m - 1)) + 1) + 1;
+    affected= registerSet.updateIfGreater(j, r);
+}
+  return affected;
+}
+
+public long cardinality() {
+    double registerSum = 0;
+    int count = registerSet.count;
+    double zeros = 0.0;
+    for (int j = 0; j < registerSet.count; j++) {
+        int val = registerSet.get(j);
+        registerSum += 1.0 / (1 << val);
+        if (val == 0) {
+            zeros++;
+        }
     }
 
-  public long cardinality() {
-    double sumR = 0;
-        for (int j=0; j<numvectors; j++) {
-         // System.out.println(BitUtil.mapAsBitString(bitmaps[j]));
-          int R=BitUtil.LSBZero(bitmaps[j]);
-         // System.out.println(R);
-          sumR += R;
-        }
-    return (long) Math.floor(numvectors / PHI * Math.pow(2, sumR/numvectors));
+    double estimate = alphaMM * (1 / registerSum);
+
+    if (estimate <= (5.0 / 2.0) * count) {
+        // Small Range Estimate
+        return Math.round(linearCounting(count, zeros));
+    } else {
+        return Math.round(estimate);
+    }
 }
-  
+
+protected static double getAlphaMM(final int p, final int m) {
+    // See the paper.
+    switch (p) {
+        case 4:
+            return 0.673 * m * m;
+        case 5:
+            return 0.697 * m * m;
+        case 6:
+            return 0.709 * m * m;
+        default:
+            return (0.7213 / (1 + 1.079 / m)) * m * m;
+    }
+}
+
+protected static double linearCounting(int m, double V) {
+    return m * Math.log(m / V);
+}
 }

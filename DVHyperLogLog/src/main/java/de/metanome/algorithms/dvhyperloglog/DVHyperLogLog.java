@@ -76,14 +76,12 @@ public class DVHyperLogLog extends DVHyperLogLogAlgorithm implements BasicStatis
 
   @Override
   public String getAuthors() {
-    // TODO Auto-generated method stub
     return "Hazar Harmouch";
   }
 
   @Override
   public String getDescription() {
-    // TODO Auto-generated method stub
-    return "Flajolet Martin Cardinality Estimator. Flajolet, P., & Martin, G. N. (1985). Probabilistic counting algorithms for data base applications. Journal of computer and system sciences, 31(2), 182-209.";
+    return "Hyperloglog. Flajolet, P., Fusy, É., Gandouet, O., & Meunier, F. (2008). Hyperloglog: the analysis of a near-optimal cardinality estimation algorithm. DMTCS Proceedings, (1).";
   }
 
 }

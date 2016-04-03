@@ -50,12 +50,14 @@ public class PCSA {
     if(o!=null){
                //hash the data value to get unsigned value
                 long v=HashFunction.hash64(o);
-                int Numbits=(int) (Math.log(numvectors)/Math.log(2));
-                int vectorindex =(int)v >>> (Long.SIZE - Numbits);
-                int indexinvector= (Long.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
-                  if(bitmaps[vectorindex].get(indexinvector)==false)
-                  { bitmaps[vectorindex].set(indexinvector,true);
-                affected  = true;
+                v=v& 0xFFFFFFFFL;
+                // get the first k bit to determine the bucket 
+                int j =(int)(v%numvectors);
+                // calculating rho(bk+1,bk+2 ....)
+                byte r = (byte) (Long.numberOfTrailingZeros(v/numvectors));
+                  if(bitmaps[j].get(r)==false)
+                  { bitmaps[j].set(r,true);
+                    affected  = true;
                   }
                 
               }
@@ -72,6 +74,15 @@ public class PCSA {
     return (long) Math.floor(numvectors / PHI * Math.pow(2, sumR/numvectors));
 }
   
-  
+  /**
+   * @param v: bitmap represented as long
+   * @return the position of the least significant 1-bit in the binary representation of bitmap and
+   *         rho(O)=0
+   */
+  private int rho(long v) {
+    int rho = 0;
+    rho=Long.numberOfTrailingZeros(v);
+    return rho == 64 ? 0 : rho;
+  }  
   
 }

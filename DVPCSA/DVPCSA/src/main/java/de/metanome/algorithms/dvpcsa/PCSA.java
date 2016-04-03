@@ -50,11 +50,12 @@ public class PCSA {
     if(o!=null){
                //hash the data value to get unsigned value
                 long v=HashFunction.hash64(o);
-                v=v& 0xFFFFFFFFL;
+                //v=v& 0xFFFFFFFFL;
                 // get the first k bit to determine the bucket 
-                int j =(int)(v%numvectors);
+                int Numbits=(int) (Math.log(numvectors)/Math.log(2));
+                int j =(int)(v& ((1 << Numbits) - 1));
                 // calculating rho(bk+1,bk+2 ....)
-                byte r = (byte) (Long.numberOfTrailingZeros(v/numvectors));
+                byte r = (byte) rho(v>>> Numbits);
                   if(bitmaps[j].get(r)==false)
                   { bitmaps[j].set(r,true);
                     affected  = true;
@@ -79,10 +80,22 @@ public class PCSA {
    * @return the position of the least significant 1-bit in the binary representation of bitmap and
    *         rho(O)=0
    */
+  /**
+   * @param v: bitmap represented as long
+   * @return the position of the least significant 1-bit in the binary representation of bitmap and
+   *         rho(O)=0
+   */
   private int rho(long v) {
     int rho = 0;
-    rho=Long.numberOfTrailingZeros(v);
-    return rho == 64 ? 0 : rho;
-  }  
+    for (int i=0; i<bitmapSize; i++) { // size of long=64 bits.
+            if ((v & 0x01) == 0) {
+                    v = v >> 1;
+            rho++;
+            } else {
+                    break;
+            }
+    }
+    return rho == bitmapSize ? 0 : rho;
+}
   
 }

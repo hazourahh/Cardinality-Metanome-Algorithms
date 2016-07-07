@@ -11,15 +11,15 @@ package de.metanome.algorithms.dvhyperloglog;
 public class HyperLogLog {
  
   private final RegisterSet registerSet;
-  private final int log2m;
-  private final double alphaMM;
+  private final int log2m;// b in the paper
+  private final double alphaMM;// the multiplication of m and alpha m in the cardinality relation
   private MurmurHash3 HashFunction;
   
   
   public HyperLogLog(double error) {
-    int m =BitUtil.roundPowerOf2(Math.pow(1.04/error, 2));
-    this.log2m  =(int) (Math.log(m)/Math.log(2));
-    validateLog2m(log2m);
+    int m =BitUtil.roundPowerOf2(Math.pow(1.04/error, 2)); // get the number of registers according to the standard error
+    this.log2m  =(int) (Math.log(m)/Math.log(2)); // size of the portion of the hash used to determine the register 
+    validateLog2m(log2m); // m between 1 and 10 power 9 
     this.registerSet =new RegisterSet(1 << log2m);
     int n = 1 << this.log2m;
     alphaMM = getAlphaMM(log2m, n);

@@ -91,7 +91,7 @@ public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorith
 
   @Override
   public String getDescription() {
-    // TODO Auto-generated method stub
+    
     return "Bar-Yossef, Ziv, et al. Counting distinct elements in a data stream.Randomization and Approximation Techniques in Computer Science. Springer Berlin Heidelberg, 2002. 1-10.";
   }
 

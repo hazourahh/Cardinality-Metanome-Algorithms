@@ -3,7 +3,6 @@ package de.metanome.algorithms.dvbjkst;
 
 import java.util.*;
 import java.util.Map.Entry;
-
 import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
 /**
  * BJKST algorithm for distinct counting.
@@ -26,9 +25,11 @@ public class BJKST {
   private int maxbufferSize;// the size of the bucket B consisting of all tokens j with
                             // trailzero(h(j))>= z the compression factor
 
- private int ghasherseed=0x5bd1e995;
 
-
+ private MurmurHash3 hash=MurmurHash3.getInstance();
+private int hseed=9001;
+private int gseed=8000; 
+ 
   // C the parameter used to determine the max buffer size
   // epsilon: the desired error limit
   public BJKST(int c, double epsilon) {
@@ -43,11 +44,11 @@ public class BJKST {
 
   public void offer(Object o) {
 
-    int zereosP  = Long.numberOfLeadingZeros(MurmurHash.hash64(o))+1;
+    int zereosP  = Long.numberOfLeadingZeros(hash.hash64(o,hseed)[0])+1;
     if (zereosP >= this.Zlevel) {
       //call  g hash function 
-      final byte[] bytes = ((String) o).getBytes();
-      buffer.put(Long.toBinaryString(MurmurHash.hash64(bytes,bytes.length,ghasherseed)), zereosP);
+     
+      buffer.put(Long.toBinaryString(hash.hash64(o,gseed)[0]), zereosP);
       while (buffer.size() >= maxbufferSize) {
         this.Zlevel = this.Zlevel + 1;
         for (Iterator<Entry<String, Integer>> itr = buffer.entrySet().iterator(); itr.hasNext();) {

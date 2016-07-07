@@ -15,7 +15,7 @@ public class AMS {
   private int R;
   private MurmurHash3 HashFunction;
 
-  public AMS(double error) {
+  public AMS() {
     R = 0;
     HashFunction = MurmurHash3.getInstance();
   }

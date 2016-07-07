@@ -20,7 +20,6 @@ public class DVAMSAlgorithm {
 	protected List<String> columnNames;
 	private final String NUMBEROFDISTINCT = "Number of Distinct Values";
 	private RelationalInput input;
-	protected double eps=0.1;
 	public void execute() throws AlgorithmExecutionException{
 		////////////////////////////////////////////
 		// THE DISCOVERY ALGORITHM LIVES HERE :-) //
@@ -32,7 +31,7 @@ public class DVAMSAlgorithm {
     this.columnNames = input.columnNames();
     ArrayList<AMS> Columns = new ArrayList<AMS>();
     for (int i = 0; i < columnNames.size(); i++)
-      Columns.add(new AMS(eps));
+      Columns.add(new AMS());
      
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();

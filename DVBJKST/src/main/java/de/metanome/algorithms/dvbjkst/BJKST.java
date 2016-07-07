@@ -43,7 +43,7 @@ private int gseed=8000;
 
 
   public void offer(Object o) {
-
+if(o!=null){
     int zereosP  = Long.numberOfLeadingZeros(hash.hash64(o,hseed)[0])+1;
     if (zereosP >= this.Zlevel) {
       //call  g hash function 
@@ -59,7 +59,7 @@ private int gseed=8000;
         }
       }
     }
-
+}
   }
 
   public long cardinality() {

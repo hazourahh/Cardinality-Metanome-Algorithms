@@ -100,7 +100,7 @@ public class LinearCounting   {
     public boolean offer(Object o) {
         boolean modified = false;
 
-        long hash = (long) MurmurHash.hash(o);
+        long hash = (long) MurmurHash3.getInstance().hash(o);
         int bit = (int) ((hash & 0xFFFFFFFFL) % (long) length);
         int i = bit / 8;
         byte b = map[i];

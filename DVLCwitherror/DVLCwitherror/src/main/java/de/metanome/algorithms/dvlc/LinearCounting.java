@@ -98,8 +98,9 @@ public class LinearCounting   {
 
 
     public boolean offer(Object o) {
+      
         boolean modified = false;
-
+if(o!=null){
         long hash = (long) MurmurHash3.getInstance().hash(o);
         int bit = (int) ((hash & 0xFFFFFFFFL) % (long) length);
         int i = bit / 8;
@@ -110,7 +111,7 @@ public class LinearCounting   {
             count--;
             modified = true;
         }
-
+}
         return modified;
     }
 

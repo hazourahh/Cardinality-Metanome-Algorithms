@@ -37,7 +37,7 @@ private static void validateLog2m(int log2m) {
 public boolean offer(Object o) {
   boolean affected=false;
   if(o!=null){
-    final long x = HashFunction.hash64(o);
+    final long x = HashFunction.hash(o);
     // j becomes the binary address determined by the first b log2m of x
     // j will be between 0 and 2^log2m
     final int j = (int) (x >>> (Long.SIZE - log2m));

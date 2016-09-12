@@ -11,7 +11,7 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 
-public class DVHyperLogLogAlgorithm {
+public class DVHyperLogLogAlgorithmplus {
 	
 	protected RelationalInputGenerator inputGenerator = null;
 	protected BasicStatisticsResultReceiver resultReceiver = null;
@@ -20,7 +20,8 @@ public class DVHyperLogLogAlgorithm {
 	protected List<String> columnNames;
 	private final String NUMBEROFDISTINCT = "Number of Distinct Values";
 	private RelationalInput input;
-	protected double eps=0.1;
+	protected int p=14;
+	protected int ps=25;
 	public void execute() throws AlgorithmExecutionException{
 		////////////////////////////////////////////
 		// THE DISCOVERY ALGORITHM LIVES HERE :-) //
@@ -32,7 +33,7 @@ public class DVHyperLogLogAlgorithm {
     this.columnNames = input.columnNames();
     ArrayList<HyperLogLogPlus> Columns = new ArrayList<HyperLogLogPlus>();
     for (int i = 0; i < columnNames.size(); i++)
-      Columns.add(new HyperLogLogPlus(4));
+      Columns.add(new HyperLogLogPlus(p,ps));
      
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();

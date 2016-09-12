@@ -8,17 +8,18 @@ import de.metanome.algorithm_integration.algorithm_types.BasicStatisticsAlgorith
 import de.metanome.algorithm_integration.algorithm_types.RelationalInputParameterAlgorithm;
 import de.metanome.algorithm_integration.algorithm_types.StringParameterAlgorithm;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirement;
+import de.metanome.algorithm_integration.configuration.ConfigurationRequirementInteger;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementRelationalInput;
-import de.metanome.algorithm_integration.configuration.ConfigurationRequirementString;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 
 
-public class DVHyperLogLogPlus extends DVHyperLogLogAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm  {
+public class DVHyperLogLogPlus extends DVHyperLogLogAlgorithmplus implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm  {
 
 	public enum Identifier {
 		INPUT_GENERATOR,
-		STANDARD_ERROR
+		PERCISION,
+		PERCISION_SPARSE
 		
 	};
 	
@@ -26,12 +27,16 @@ public class DVHyperLogLogPlus extends DVHyperLogLogAlgorithm implements BasicSt
 	public ArrayList<ConfigurationRequirement<?>> getConfigurationRequirements() {
 		ArrayList<ConfigurationRequirement<?>> conf = new ArrayList<>();
 		conf.add(new ConfigurationRequirementRelationalInput(DVHyperLogLogPlus.Identifier.INPUT_GENERATOR.name()));
-		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVHyperLogLogPlus.Identifier.STANDARD_ERROR.name());
-        inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
-        inputstandard_error.setDefaultValues(Defaults);
-        conf.add(inputstandard_error);
-        
+		ConfigurationRequirementInteger p=new ConfigurationRequirementInteger(DVHyperLogLogPlus.Identifier.PERCISION.name());
+		ConfigurationRequirementInteger ps=new ConfigurationRequirementInteger(DVHyperLogLogPlus.Identifier.PERCISION.name());
+        p.setRequired(true);
+        ps.setRequired(true);
+        Integer[] Defaultp={14};
+        p.setDefaultValues(Defaultp);
+        Integer[] Defaultps={25};
+        ps.setDefaultValues(Defaultps);
+        conf.add(p);
+        conf.add(ps);
 		//conf.add(new ConfigurationRequirementRelationalInput(MyIndDetector.Identifier.INPUT_GENERATOR.name(), ConfigurationRequirement.ARBITRARY_NUMBER_OF_VALUES)); // For IND discovery, the number of inputs is arbitrary
 		//conf.add(new ConfigurationRequirementInteger(MyOdDetector.Identifier.IMPORTANT_PARAMETER.name())); // The algorithm can ask the user for other parameters if needed. If so, then implement the Integer/String/BooleanParameterAlgorithm interfaces as well
 		return conf;
@@ -57,17 +62,22 @@ public class DVHyperLogLogPlus extends DVHyperLogLogAlgorithm implements BasicSt
 	@Override
 	  public void setStringConfigurationValue(String identifier, String... values)
 	      throws AlgorithmConfigurationException {
-	    if (DVHyperLogLogPlus.Identifier.STANDARD_ERROR.name().equals(identifier))
+	    if (DVHyperLogLogPlus.Identifier.PERCISION.name().equals(identifier))
 	    {
-	      if(values!=null && !values[0].equals("") )
+	      if(values!=null && !values[0].equals("") & values[1].equals("") )
 	      {try{
-	       double error= Double.parseDouble(values[0]);
-	       if(error>0 && error<1)
-	       this.eps=error;
-	       else
-	         throw new Exception();
+	       int p= Integer.parseInt(values[0]);
+	       int ps= Integer.parseInt(values[1]);
+	       if ((p < 4) || ((p > ps) && (ps != 0))) {
+	         throw new IllegalArgumentException("p must be between 4 and sp (inclusive)");
+	       }
+	       if (ps > 32) {
+	         throw new IllegalArgumentException("sp values greater than 32 not supported");
+	       } 
+	       this.p=p;
+	       this.ps=ps;
 	      }catch(Exception ex)
-	      {throw new AlgorithmConfigurationException("The Standard Error Epsilon should be a positive double in (0, 1) range");}
+	      {throw new AlgorithmConfigurationException("The input should be an integer");}
 	      
 	      }
 	      

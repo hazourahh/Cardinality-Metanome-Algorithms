@@ -19,7 +19,7 @@ public class HyperLogLog {
   public HyperLogLog(double error) {
     int m =BitUtil.roundPowerOf2(Math.pow(1.04/error, 2)); // get the number of registers according to the standard error
     this.log2m  =(int) (Math.log(m)/Math.log(2)); // size of the portion of the hash used to determine the register 
-    validateLog2m(log2m); // m between 1 and 10 power 9 
+    validateLog2m(log2m); // [4,16] for 32 bit i make it 32 as half of 64
     this.registerSet =new RegisterSet(1 << log2m);
     int n = 1 << this.log2m;
     alphaMM = getAlphaMM(log2m, n);
@@ -28,16 +28,16 @@ public class HyperLogLog {
   
 
 private static void validateLog2m(int log2m) {
-    if (log2m < 0 || log2m > 30) {
+    if (log2m < 4 || log2m > 32) {
         throw new IllegalArgumentException("log2m argument is "
-                                           + log2m + " and is outside the range [0, 30]");
+                                           + log2m + " and is outside the range [4, 32]");
     }
 }
 
 public boolean offer(Object o) {
   boolean affected=false;
   if(o!=null){
-    final long x = HashFunction.hash(o);
+    final long x = HashFunction.hash64(o);
     // j becomes the binary address determined by the first b log2m of x
     // j will be between 0 and 2^log2m
     final int j = (int) (x >>> (Long.SIZE - log2m));
@@ -64,9 +64,13 @@ public long cardinality() {
     if (estimate <= (5.0 / 2.0) * count) {
         // Small Range Estimate
         return Math.round(linearCounting(count, zeros));
-    } else {
-        return Math.round(estimate);
-    }
+    } else if (estimate > (1 / 30) * Math.pow(2, 64))
+      //large range correction
+    { return Math.round( -1*Math.pow(2, 64)* Math.log(1-estimate/Math.pow(2, 64)) );}
+    else  {
+      //intermediate range no correction
+      return Math.round(estimate);
+  }
 }
 
 protected static double getAlphaMM(final int p, final int m) {

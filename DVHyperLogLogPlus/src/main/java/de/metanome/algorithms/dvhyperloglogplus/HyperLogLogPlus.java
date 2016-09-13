@@ -29,7 +29,6 @@ public class HyperLogLogPlus {
   private static final int SPARSE_SET_TEMP_SET_RATIO = 4;
 
   /**
-   * 'normal' is approximately the same as regular hyperloglog 'sparse' handles lower cardinality
    * values with a highly accurate but poorly scaling strategy and leverages data compression to
    * compete with 'normal' for as long as possible (sparse has the advantage on accuracy per unit of
    * memory at low cardinality but quickly falls behind).
@@ -1001,7 +1000,7 @@ public class HyperLogLogPlus {
     if (sp > 32) {
       throw new IllegalArgumentException("sp values greater than 32 not supported");
     }
-
+    HashFunction = MurmurHash3.getInstance();
     this.p = p;
     m = p > 30 ? Integer.MAX_VALUE : 1 << p;
     format = Format.NORMAL;

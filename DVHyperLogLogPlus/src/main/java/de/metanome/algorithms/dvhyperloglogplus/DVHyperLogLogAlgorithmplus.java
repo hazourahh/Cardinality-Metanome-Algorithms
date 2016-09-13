@@ -38,7 +38,7 @@ public class DVHyperLogLogAlgorithmplus {
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();
       for (int i = 0; i < columnNames.size(); i++)
-       
+        if(CurrentTuple.get(i)!=(null))
            Columns.get(i).offer(CurrentTuple.get(i));
       
 		

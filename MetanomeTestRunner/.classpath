@@ -12,7 +12,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_121">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
@@ -22,5 +22,15 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVA"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVAMS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVBJKST"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVFM"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVHyperLogLog"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVHyperLogLogPlus"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVLC"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVLogLog"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVPCSA"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/DVSuperLogLog"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

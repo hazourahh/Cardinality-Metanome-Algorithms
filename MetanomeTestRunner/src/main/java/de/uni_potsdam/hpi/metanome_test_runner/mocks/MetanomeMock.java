@@ -9,7 +9,7 @@ import de.metanome.algorithm_integration.configuration.ConfigurationSettingFileI
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.Result;
-import de.metanome.algorithms.dva.DVA;
+import de.metanome.algorithms.dvfm.DVFM;
 import de.metanome.backend.input.file.DefaultFileInputGenerator;
 import de.metanome.backend.result_receiver.ResultCache;
 import de.uni_potsdam.hpi.metanome_test_runner.config.Config;
@@ -26,8 +26,8 @@ public class MetanomeMock {
 			
 			ResultCache resultReceiver = new ResultCache("MetanomeMock", null);
 			
-			DVA algorithm = new DVA();
-			algorithm.setRelationalInputConfigurationValue(DVA.Identifier.INPUT_GENERATOR.name(), inputGenerator);
+			DVFM algorithm = new DVFM();
+			algorithm.setRelationalInputConfigurationValue(DVFM.Identifier.INPUT_GENERATOR.name(), inputGenerator);
 			algorithm.setResultReceiver(resultReceiver);
 			
 			long time = System.currentTimeMillis();
@@ -45,6 +45,7 @@ public class MetanomeMock {
 						"Results: " + results.size() + "\r\n\r\n" + 
 						conf.toString(), outputPath + conf.statisticsFileName);
 				FileUtils.writeToFile(format(results), outputPath + conf.resultFileName);
+				System.out.println(format(results));
 			}
 		}
 		catch (AlgorithmExecutionException e) {

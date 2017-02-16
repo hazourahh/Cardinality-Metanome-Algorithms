@@ -5,7 +5,7 @@ import java.io.File;
 public class Config {
 
 	public enum Algorithm {
-		DVA
+		DVFM
 	}
 	
 	public enum Dataset {
@@ -39,7 +39,7 @@ public class Config {
 	public boolean writeResults = true;
 	
 	public Config() {
-		this(Config.Algorithm.DVA, Config.Dataset.PLANETS);
+		this(Config.Algorithm.DVFM, Config.Dataset.PLANETS);
 	}
 
 	public Config(Config.Algorithm algorithm, Config.Dataset dataset) {
@@ -58,11 +58,11 @@ public class Config {
 		this.dataset = dataset;
 		switch (dataset) {
 			case PLANETS:
-				//this.inputDatasetName = "WDC_planetz";
+				this.inputDatasetName = "WDC_planetz";
 			 
-			    this.inputDatasetName = "edit_note";
-				//this.inputFileSeparator = ',';
-                //this.inputFileHasHeader = true;
+			   // this.inputDatasetName = "edit_note";
+				this.inputFileSeparator = ',';
+                this.inputFileHasHeader = true;
 				break;
 
 			case SYMBOLS:

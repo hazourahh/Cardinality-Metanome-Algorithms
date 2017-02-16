@@ -62,6 +62,7 @@ public class DVFM extends DVFMAlgorithm implements BasicStatisticsAlgorithm, Rel
 	}
 
 	@Override
+	
 	  public void setStringConfigurationValue(String identifier, String... values)
 	      throws AlgorithmConfigurationException {
 	    if (DVFM.Identifier.STANDARD_ERROR.name().equals(identifier))

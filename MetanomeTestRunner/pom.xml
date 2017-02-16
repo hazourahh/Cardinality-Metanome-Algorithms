@@ -41,8 +41,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>de.metanome.algorithms.dva</groupId>
-      <artifactId>DVA</artifactId>
+      <groupId>de.metanome.algorithms.dvfm</groupId>
+      <artifactId>DVFM</artifactId>
       <version>1.1-SNAPSHOT</version>
     </dependency>
     

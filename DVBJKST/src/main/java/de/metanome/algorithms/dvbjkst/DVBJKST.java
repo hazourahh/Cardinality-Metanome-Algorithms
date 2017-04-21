@@ -5,23 +5,21 @@ import java.util.ArrayList;
 import de.metanome.algorithm_integration.AlgorithmConfigurationException;
 import de.metanome.algorithm_integration.AlgorithmExecutionException;
 import de.metanome.algorithm_integration.algorithm_types.BasicStatisticsAlgorithm;
-import de.metanome.algorithm_integration.algorithm_types.IntegerParameterAlgorithm;
 import de.metanome.algorithm_integration.algorithm_types.RelationalInputParameterAlgorithm;
 import de.metanome.algorithm_integration.algorithm_types.StringParameterAlgorithm;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirement;
-import de.metanome.algorithm_integration.configuration.ConfigurationRequirementInteger;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementRelationalInput;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementString;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 
 
-public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm, IntegerParameterAlgorithm  {
+public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm {
 
 	public enum Identifier {
 		INPUT_GENERATOR,
-		STANDARD_ERROR,
-		COMPRESSION_FACTOR
+		RELATIVE_ERROR,
+		
 		
 	};
 	
@@ -29,16 +27,16 @@ public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorith
 	public ArrayList<ConfigurationRequirement<?>> getConfigurationRequirements() {
 		ArrayList<ConfigurationRequirement<?>> conf = new ArrayList<>();
 		conf.add(new ConfigurationRequirementRelationalInput(DVBJKST.Identifier.INPUT_GENERATOR.name()));
-		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVBJKST.Identifier.STANDARD_ERROR.name());
-		ConfigurationRequirementInteger input_compression=new ConfigurationRequirementInteger(DVBJKST.Identifier.COMPRESSION_FACTOR.name());
+		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVBJKST.Identifier.RELATIVE_ERROR.name());
+		
         inputstandard_error.setRequired(false);
-        input_compression.setRequired(false);
-        String[] Defaults_error={"0.02f"};
-        Integer[] Defaults_c={576};
+       
+        String[] Defaults_error={"0.01"};
+        
         inputstandard_error.setDefaultValues(Defaults_error);
-        input_compression.setDefaultValues(Defaults_c);
+        
         conf.add(inputstandard_error);
-        conf.add(input_compression);
+      
 		//conf.add(new ConfigurationRequirementRelationalInput(MyIndDetector.Identifier.INPUT_GENERATOR.name(), ConfigurationRequirement.ARBITRARY_NUMBER_OF_VALUES)); // For IND discovery, the number of inputs is arbitrary
 		//conf.add(new ConfigurationRequirementInteger(MyOdDetector.Identifier.IMPORTANT_PARAMETER.name())); // The algorithm can ask the user for other parameters if needed. If so, then implement the Integer/String/BooleanParameterAlgorithm interfaces as well
 		return conf;
@@ -64,7 +62,7 @@ public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorith
 	@Override
 	  public void setStringConfigurationValue(String identifier, String... values)
 	      throws AlgorithmConfigurationException {
-	    if (DVBJKST.Identifier.STANDARD_ERROR.name().equals(identifier))
+	    if (DVBJKST.Identifier.RELATIVE_ERROR.name().equals(identifier))
 	    {
 	      if(values!=null && !values[0].equals("") )
 	      {try{
@@ -74,7 +72,7 @@ public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorith
 	       else
 	         throw new Exception();
 	      }catch(Exception ex)
-	      {throw new AlgorithmConfigurationException("The Standard Error Epsilon should be a positive double in (0, 1) range");}
+	      {throw new AlgorithmConfigurationException("The relative error Epsilon should be a positive double in (0, 1) range");}
 	      
 	      }
 	      
@@ -95,14 +93,7 @@ public class DVBJKST extends DVBJKSTAlgorithm implements BasicStatisticsAlgorith
     return "Bar-Yossef, Ziv, et al. Counting distinct elements in a data stream.Randomization and Approximation Techniques in Computer Science. Springer Berlin Heidelberg, 2002. 1-10.";
   }
 
-  @Override
-  public void setIntegerConfigurationValue(String identifier, Integer... values)
-      throws AlgorithmConfigurationException {
-    if (DVBJKST.Identifier.COMPRESSION_FACTOR.name().equals(identifier))
-    {this.C=values[0];
-    }
-    }
-    
+  
   
 
 

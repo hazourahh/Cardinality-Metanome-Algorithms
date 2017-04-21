@@ -945,7 +945,6 @@ public class HyperLogLogPlus {
   private int[] tmpSet;
   private int tmpIndex = 0;
   private int[] sparseSet;
-  private MurmurHash3 HashFunction;
   // -------------------------------------------------------
 
   /**
@@ -988,7 +987,7 @@ public class HyperLogLogPlus {
       sparseSet[i] = nextValue + previousValue;
       previousValue = sparseSet[i];
     }
-    HashFunction = MurmurHash3.getInstance();
+
   }
 
 
@@ -1000,7 +999,7 @@ public class HyperLogLogPlus {
     if (sp > 32) {
       throw new IllegalArgumentException("sp values greater than 32 not supported");
     }
-    HashFunction = MurmurHash3.getInstance();
+  
     this.p = p;
     m = p > 30 ? Integer.MAX_VALUE : 1 << p;
     format = Format.NORMAL;
@@ -1072,7 +1071,7 @@ public class HyperLogLogPlus {
     throw new UnsupportedOperationException();
   }
   public boolean offer(Object o) {
-    long x = HashFunction.hash64(o);
+    long x = MurmurHash.hash64(o);
     return offerHashed(x);
   }
   /**

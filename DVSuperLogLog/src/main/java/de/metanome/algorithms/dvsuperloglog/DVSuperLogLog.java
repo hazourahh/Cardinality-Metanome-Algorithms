@@ -28,7 +28,7 @@ public class DVSuperLogLog extends DVSuperLogLogAlgorithm implements BasicStatis
 		conf.add(new ConfigurationRequirementRelationalInput(DVSuperLogLog.Identifier.INPUT_GENERATOR.name()));
 		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVSuperLogLog.Identifier.STANDARD_ERROR.name());
         inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
+        String[] Defaults={"0.01"};
         inputstandard_error.setDefaultValues(Defaults);
         conf.add(inputstandard_error);
         

@@ -23,11 +23,11 @@ public class DVBloomFilterAlgorithm {
 
   protected String relationName;
   protected List<String> columnNames;
-  private int NUMOFTUPLES;
   private final String NUMBEROFDISTINCT = "Number of Distinct Values";
   private RelationalInput input;
-  protected double eps = 0.01;
-
+  protected int bitperelement=2;
+  private int NUMOFTUPLES;
+  protected int approache = 0;
   public void execute() throws AlgorithmExecutionException {
     ////////////////////////////////////////////
     // THE DISCOVERY ALGORITHM LIVES HERE :-) //
@@ -46,31 +46,30 @@ public class DVBloomFilterAlgorithm {
 
 
     input = this.inputGenerator.generateNewCopy();
-    ArrayList<BloomFilter> Columns = new ArrayList<BloomFilter>();
-    if (eps == 0.01) {
-      // (3) Read the map size from Table II using the relation cardinality q as n
+    this.relationName = input.relationName();
+    this.columnNames = input.columnNames();
+   ArrayList<BloomFilter> Columns = new ArrayList<BloomFilter>();
+    
+            
       for (int i = 0; i < columnNames.size(); i++)
-        Columns.add(new BloomFilter(NUMOFTUPLES));
-    } else {
-            // (3) calculate the map size that implement a Linear Counter with arbitrary standard
-            // error and maximum expected cardinality
-      for (int i = 0; i < columnNames.size(); i++)
-        Columns.add(new BloomFilter(eps, NUMOFTUPLES));
-    }
-    // (4) Run the basic Linear Counting Algorithm
-    // (4.1)scan the data values in each column in the relation
+        Columns.add(new BloomFilter(NUMOFTUPLES,bitperelement));
+    
     while (input.hasNext()) {
       List<String> CurrentTuple = input.next();
-      // (4.2)uses a hash function to map each data value to a bit in the bitmap and sets this bit
-      // to “1”
+      
       for (int i = 0; i < columnNames.size(); i++)
-        Columns.get(i).offer(CurrentTuple.get(i));
+        Columns.get(i).add(CurrentTuple.get(i));
 
     }
     // (4.3)estimates the columns cardinality
+approache=1;
     for (int i = 0; i < columnNames.size(); i++) {
-      addStatistic(NUMBEROFDISTINCT, Columns.get(i).cardinality(), columnNames.get(i),
+      if(approache==0)
+      addStatistic(NUMBEROFDISTINCT, Columns.get(i).cardinality_Swamidass(), columnNames.get(i),
           relationName);
+      else
+        addStatistic(NUMBEROFDISTINCT, Columns.get(i).cardinality_Papapetrou(), columnNames.get(i),
+            relationName);
     }
 
   }
@@ -83,4 +82,9 @@ public class DVBloomFilterAlgorithm {
     resultReceiver.receiveResult(result);
   }
 
+  public void setApproache(int approache) {
+    this.approache = approache;
+  }
+
+  
 }

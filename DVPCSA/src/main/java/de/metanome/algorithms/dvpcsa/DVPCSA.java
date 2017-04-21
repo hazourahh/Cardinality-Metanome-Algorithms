@@ -35,7 +35,7 @@ public class DVPCSA extends DVPCSAAlgorithm implements BasicStatisticsAlgorithm,
 		conf.add(new ConfigurationRequirementRelationalInput(DVPCSA.Identifier.INPUT_GENERATOR.name()));
 		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVPCSA.Identifier.STANDARD_ERROR.name());
         inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
+        String[] Defaults={"0.01"};
         inputstandard_error.setDefaultValues(Defaults);
         conf.add(inputstandard_error);
         

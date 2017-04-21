@@ -33,7 +33,7 @@ public class FlajoletMartin {
    * The u=generated hash functions
    */
   private  int[] seeds;
-  private  MurmurHash3 h;
+
   /**
    * Each Bitmap represents whether we have seen a hash function value whose binary representation ends in 0*i1
    * one for each hash function
@@ -47,7 +47,6 @@ public class FlajoletMartin {
       bitmaps = new BitSet[numHashFunctions];
       for(int i=0;i<numHashFunctions;i++)
         bitmaps[i]=new BitSet(bitmapSize);
-      h=new MurmurHash3();
       seeds = new int[numHashFunctions];
       generateseeds();
   }
@@ -61,7 +60,7 @@ public class FlajoletMartin {
             for (int j=0; j<numHashFunctions; j++) {
                 int s = seeds[j];
                 //non-negative hash values
-                long v = h.hash64(o,s)[0];
+                long v = MurmurHash.hash64(o,s);
                 //index := pi(hash(x))
                 int index =rho(v);
                 //update the corresponding bit in the bitmap
@@ -102,7 +101,7 @@ public class FlajoletMartin {
     while (b < intnum) {
       b = b << 1;
     }
-    return b;
+    return b/2;
   }
 
   

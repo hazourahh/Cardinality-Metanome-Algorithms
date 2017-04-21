@@ -20,7 +20,7 @@ public class DVSuperLogLogAlgorithm {
 	protected List<String> columnNames;
 	private final String NUMBEROFDISTINCT = "Number of Distinct Values";
 	private RelationalInput input;
-	protected double eps=0.1;
+	protected double eps=0.01;
 	public void execute() throws AlgorithmExecutionException{
 		////////////////////////////////////////////
 		// THE DISCOVERY ALGORITHM LIVES HERE :-) //

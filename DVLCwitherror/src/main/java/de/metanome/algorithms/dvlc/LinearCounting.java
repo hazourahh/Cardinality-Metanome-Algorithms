@@ -101,7 +101,7 @@ public class LinearCounting   {
       
         boolean modified = false;
 if(o!=null){
-        long hash = (long) MurmurHash3.getInstance().hash(o);
+        long hash = (long) MurmurHash.hash64(o);
         int bit = (int) ((hash & 0xFFFFFFFFL) % (long) length);
         int i = bit / 8;
         byte b = map[i];

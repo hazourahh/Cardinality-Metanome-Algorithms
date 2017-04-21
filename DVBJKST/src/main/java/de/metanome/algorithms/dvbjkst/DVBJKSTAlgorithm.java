@@ -20,9 +20,8 @@ public class DVBJKSTAlgorithm {
 	protected List<String> columnNames;
 	private final String NUMBEROFDISTINCT = "Number of Distinct Values";
 	private RelationalInput input;
-	protected double eps=0.001;
-	protected int C = 576;// the parameter C based on the desired guarantees on the algorithms estimate
-     // for determinant factor <=1/3
+	protected double eps=0.01;
+	
 	public void execute() throws AlgorithmExecutionException{
 		////////////////////////////////////////////
 		// THE DISCOVERY ALGORITHM LIVES HERE :-) //
@@ -34,7 +33,7 @@ public class DVBJKSTAlgorithm {
     this.columnNames = input.columnNames();
     ArrayList<BJKST> Columns = new ArrayList<BJKST>();
     for (int i = 0; i < columnNames.size(); i++)
-      Columns.add(new BJKST(C,eps));
+      Columns.add(new BJKST(eps));
      
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();

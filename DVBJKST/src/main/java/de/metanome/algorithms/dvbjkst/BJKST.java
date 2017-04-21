@@ -21,19 +21,17 @@ public class BJKST {
   private Integer Zlevel = 0;// the index of the current level
   private int C = 576;// the parameter C based on the desired guarantees on the algorithms estimate
                       // for determinant factor <=1/3
-  private double error = 0.02f; //
-  private int maxbufferSize;// the size of the bucket B consisting of all tokens j with
+  private double error = 0.01; //
+  private int maxbufferSize;//Theta 576/error^2
+                             // the size of the bucket B consisting of all tokens j with
                             // trailzero(h(j))>= z the compression factor
 
-
- private MurmurHash3 hash=MurmurHash3.getInstance();
 private int hseed=9001;
 private int gseed=8000; 
  
-  // C the parameter used to determine the max buffer size
+ 
   // epsilon: the desired error limit
-  public BJKST(int c, double epsilon) {
-    this.C = c;
+  public BJKST(double epsilon) {
     this.error = epsilon;
     this.maxbufferSize = (int) ((this.C) / Math.pow(this.error, 2.0));
     this.buffer = new Object2IntRBTreeMap<String>();
@@ -44,11 +42,11 @@ private int gseed=8000;
 
   public void offer(Object o) {
 if(o!=null){
-    int zereosP  = Long.numberOfLeadingZeros(hash.hash64(o,hseed)[0])+1;
+    int zereosP  = Long.numberOfTrailingZeros(MurmurHash.hash64(o,hseed));
     if (zereosP >= this.Zlevel) {
       //call  g hash function 
      
-      buffer.put(Long.toBinaryString(hash.hash64(o,gseed)[0]), zereosP);
+      buffer.put(Long.toBinaryString(MurmurHash.hash64(o,gseed)), zereosP);
       while (buffer.size() >= maxbufferSize) {
         this.Zlevel = this.Zlevel + 1;
         for (Iterator<Entry<String, Integer>> itr = buffer.entrySet().iterator(); itr.hasNext();) {

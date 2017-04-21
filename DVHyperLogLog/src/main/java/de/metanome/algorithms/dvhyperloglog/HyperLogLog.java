@@ -13,17 +13,17 @@ public class HyperLogLog {
   private final RegisterSet registerSet;
   private final int log2m;// b in the paper
   private final double alphaMM;// the multiplication of m and alpha m in the cardinality relation
-  private MurmurHash3 HashFunction;
+
   
   
   public HyperLogLog(double error) {
-    int m =BitUtil.roundPowerOf2(Math.pow(1.04/error, 2)); // get the number of registers according to the standard error
+    int m =PowerOf2((int) Math.pow(1.04/error, 2)); // get the number of registers according to the standard error
     this.log2m  =(int) (Math.log(m)/Math.log(2)); // size of the portion of the hash used to determine the register 
     validateLog2m(log2m); // [4,16] for 32 bit i make it 32 as half of 64
     this.registerSet =new RegisterSet(1 << log2m);
     int n = 1 << this.log2m;
     alphaMM = getAlphaMM(log2m, n);
-    HashFunction=MurmurHash3.getInstance();
+    
   }
   
 
@@ -37,7 +37,7 @@ private static void validateLog2m(int log2m) {
 public boolean offer(Object o) {
   boolean affected=false;
   if(o!=null){
-    final long x = HashFunction.hash64(o);
+    final long x = MurmurHash.hash64(o);
     // j becomes the binary address determined by the first b log2m of x
     // j will be between 0 and 2^log2m
     final int j = (int) (x >>> (Long.SIZE - log2m));
@@ -89,5 +89,13 @@ protected static double getAlphaMM(final int p, final int m) {
 
 protected static double linearCounting(int m, double V) {
     return m * Math.log(m / V);
+}
+
+public static int PowerOf2(final int intnum) {
+  int b = 1;
+  while (b < intnum) {
+    b = b << 1;
+  }
+  return b/2;
 }
 }

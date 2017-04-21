@@ -13,11 +13,11 @@ package de.metanome.algorithms.dvams;
 
 public class AMS {
   private int R;
-  private MurmurHash3 HashFunction;
+
 
   public AMS() {
     R = 0;
-    HashFunction = MurmurHash3.getInstance();
+   
   }
 
 
@@ -25,10 +25,10 @@ public class AMS {
     boolean affected = false;
     if (o != null) {
       // non-negative hash values
-      long v = HashFunction.hash64(o);
+      long v = MurmurHash.hash64(o);
       // calculating the position of the most significant bit that set to 1 in the final bitmap but
       // while we do not save bitmap so we save the max trailing zero number over all the traffic
-      int r = Long.numberOfLeadingZeros(v)+1;
+      int r = rho(v);
       if (R < r) {
         R = r;
         affected = true;
@@ -44,5 +44,12 @@ public class AMS {
     return (long) (Math.pow(2, R));
   }
 
+  /**
+   * @return the position of the least significant 1-bit in the binary representation of y
+   *         rho(O)=0
+   */
+  private int rho(long y) {
+    return Long.numberOfTrailingZeros(y);
+}
 
 }

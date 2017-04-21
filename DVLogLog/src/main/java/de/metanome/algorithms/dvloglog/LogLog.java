@@ -28,10 +28,6 @@ public class LogLog {
    */
   private int Rsum = 0;
   
-  /**
-   * The generated hash functions
-   */
-  private MurmurHash3 HashFunction;
   
   /**
    * correction factors
@@ -87,21 +83,24 @@ public class LogLog {
 
 
   public LogLog(double error) {  
-       this.numofbucket =BitUtil.roundPowerOf2(Math.pow(1.30/error, 2));
+      
+       this.numofbucket =PowerOf2((int) Math.pow(1.30/error, 2));
+      
        this.Numbits=(int) (Math.log(numofbucket)/Math.log(2));
+       
        if (Numbits >= (mAlpha.length - 1)) {
          throw new IllegalArgumentException(String.format("Max k (%d) exceeded: k=%d", mAlpha.length - 1, Numbits));
      }
        this.Ca = mAlpha[Numbits];
        this.M = new byte[numofbucket];
-       HashFunction=MurmurHash3.getInstance();
+       
   }
 
   public boolean offer(Object o) {
     boolean affected = false;    
     if(o!=null){
                //hash the data value to get unsigned value
-                long v=HashFunction.hash64(o);
+                long v=MurmurHash.hash64(o);
                 // get the first k bit to determine the bucket 
                 int j =(int)(v >>> (Long.SIZE - Numbits));
                 // calculating rho(bk+1,bk+2 ....)
@@ -121,4 +120,12 @@ public class LogLog {
     double Ravg = Rsum / (double) numofbucket;
     return (long) (Ca * Math.pow(2, Ravg));
 }
+  
+  public static int PowerOf2(final int intnum) {
+    int b = 1;
+    while (b < intnum) {
+      b = b << 1;
+    }
+    return b/2;
+  }
   }

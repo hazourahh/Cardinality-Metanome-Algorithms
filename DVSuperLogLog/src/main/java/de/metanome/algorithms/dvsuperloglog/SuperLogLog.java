@@ -40,61 +40,15 @@ public class SuperLogLog {
   /**
    * Restriction Rule**/
   private double B;
-  
-  /**
-   * Correction function
-   */
-  protected static final double[] mAlpha = {
-      0,
-      0.44567926005415,
-      1.2480639342271,
-      2.8391255240079,
-      6.0165231584809,
-      12.369319965552,
-      25.073991603111,
-      50.482891762408,
-      101.30047482584,
-      202.93553338100,
-      406.20559696699,
-      812.74569744189,
-      1625.8258850594,
-      3251.9862536323,
-      6504.3069874480,
-      13008.948453415,
-      26018.231384516,
-      52036.797246302,
-      104073.92896967,
-      208148.19241629,
-      416296.71930949,
-      832593.77309585,
-      1665187.8806686,
-      3330376.0958140,
-      6660752.5261049,
-      13321505.386687,
-      26643011.107850,
-      53286022.550177,
-      106572045.43483,
-      213144091.20414,
-      426288182.74275,
-      852576365.81999
-};
-
-    private double Ca;
-  /**
-   * The generated hash functions
-   */
-  private MurmurHash3 HashFunction;
-
-
-
+  private double Ca=1.09295;
+ 
   public SuperLogLog(double error) {  
-       this.numofbucket =BitUtil.roundPowerOf2(Math.pow(1.05/error, 2));
+       this.numofbucket =PowerOf2((int) Math.pow(1.05/error, 2));
        this.Numbits=(int) (Math.log(numofbucket)/Math.log(2));
-       HashFunction=MurmurHash3.getInstance();
        this.M = new byte[numofbucket];
        //truncation rule parameters
        this.truncatednumofbucket=(int)Math.floor(0.7*numofbucket);
-       this.Ca = mAlpha[Numbits]/numofbucket;
+    
        //restriction Rule parameters
        B=Math.ceil(Math.log(Nmax/numofbucket)/Math.log(2)+3);
   }
@@ -103,7 +57,7 @@ public class SuperLogLog {
     boolean affected = false;    
     if(o!=null){
                //hash the data value to get unsigned value
-                long v=HashFunction.hash64(o);
+                long v=MurmurHash.hash64(o);
                 // get the first k bit to determine the bucket 
              // get the first k bit to determine the bucket 
                 int j =(int)(v >>> (Long.SIZE - Numbits));
@@ -130,4 +84,12 @@ public class SuperLogLog {
     double Ravg = Rsum / (double) truncatednumofbucket;
     return (long) Math.floor(Ca*truncatednumofbucket* Math.pow(2, Ravg));
 }
+  
+  public static int PowerOf2(final int intnum) {
+    int b = 1;
+    while (b < intnum) {
+      b = b << 1;
+    }
+    return b/2;
+  }
   }

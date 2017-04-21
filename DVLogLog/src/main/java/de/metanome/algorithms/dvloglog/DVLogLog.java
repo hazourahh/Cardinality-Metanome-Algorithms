@@ -28,7 +28,7 @@ public class DVLogLog extends DVLogLogAlgorithm implements BasicStatisticsAlgori
 		conf.add(new ConfigurationRequirementRelationalInput(DVLogLog.Identifier.INPUT_GENERATOR.name()));
 		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVLogLog.Identifier.STANDARD_ERROR.name());
         inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
+        String[] Defaults={"0.01"};
         inputstandard_error.setDefaultValues(Defaults);
         conf.add(inputstandard_error);
         

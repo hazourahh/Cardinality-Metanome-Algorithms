@@ -28,7 +28,7 @@ public class DVMinCount extends DVMinCountAlgorithm implements BasicStatisticsAl
 		conf.add(new ConfigurationRequirementRelationalInput(DVMinCount.Identifier.INPUT_GENERATOR.name()));
 		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVMinCount.Identifier.STANDARD_ERROR.name());
         inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
+        String[] Defaults={"0.01"};
         inputstandard_error.setDefaultValues(Defaults);
         conf.add(inputstandard_error);
         
@@ -81,7 +81,7 @@ public class DVMinCount extends DVMinCountAlgorithm implements BasicStatisticsAl
 
   @Override
   public String getDescription() {
-    return "SuperLogLog Cardinality Estimator. Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg";
+    return "MinCount Estimator. F. Giroire. Order statistics and estimating cardinalities of massive data sets. Discrete Applied Mathematics, 157(2):406-427, 2009";
   }
 
 }

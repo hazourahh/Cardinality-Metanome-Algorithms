@@ -35,7 +35,7 @@ public class DVFM extends DVFMAlgorithm implements BasicStatisticsAlgorithm, Rel
 		conf.add(new ConfigurationRequirementRelationalInput(DVFM.Identifier.INPUT_GENERATOR.name()));
 		ConfigurationRequirementString inputstandard_error=new ConfigurationRequirementString(DVFM.Identifier.STANDARD_ERROR.name());
         inputstandard_error.setRequired(false);
-        String[] Defaults={"0.1"};
+        String[] Defaults={"0.01"};
         inputstandard_error.setDefaultValues(Defaults);
         conf.add(inputstandard_error);
         
@@ -75,7 +75,7 @@ public class DVFM extends DVFMAlgorithm implements BasicStatisticsAlgorithm, Rel
 	       else
 	         throw new Exception();
 	      }catch(Exception ex)
-	      {throw new AlgorithmConfigurationException("The Standard Error Epsilon should be a positive double in (0, 1) range");}
+	      {throw new AlgorithmConfigurationException("The Standard Error Epsilon should be a positive double in ]0, 1[ range");}
 	      
 	      }
 	      

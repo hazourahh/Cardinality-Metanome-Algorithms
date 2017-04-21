@@ -1,133 +1,159 @@
 package de.metanome.algorithms.dvmincount;
 
-import java.util.Arrays;
 
 
-
-/** Implementation of SuperLogLog
- ** Reference:
- *   Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg.
- * * @author Hazar.Harmouch
+/**
+ * java port of the c code by
+ * "F. Giroire. Order statistics and estimating cardinalities of massive data sets. Discrete Applied Mathematics, 157(2):406-427, 2009"
+ * 
+ * @author Hazar.Harmouch
+ *
  */
 public class MinCount {
- 
-  /**
-   * the number of buckets (m) {m=2^Range[0, 31]}
-   */
-  private int numofbucket=16;
-  /**
-   * the number of buckets (m0)=floor(m*0.7) according to the truncation rule
-   */
-  private int truncatednumofbucket=11;
-  /**
-   * the number of bits used to determine the bucket (k)=log2(m) {k=Range[0, 31]}
-   */
-  private int Numbits=4;
-  
-  /**
-   * The maximum bit set
-   */
-  private byte[] M;
-  
-  /**
-   * sum of maxs
-   */
-  private int Rsum = 0;
-  
-  /**The maximum cardinality*/
-  private double Nmax=Math.pow(10, 19);
-  
-  /**
-   * Restriction Rule**/
-  private double B;
-  
-  /**
-   * Correction function
-   */
-  protected static final double[] mAlpha = {
-      0,
-      0.44567926005415,
-      1.2480639342271,
-      2.8391255240079,
-      6.0165231584809,
-      12.369319965552,
-      25.073991603111,
-      50.482891762408,
-      101.30047482584,
-      202.93553338100,
-      406.20559696699,
-      812.74569744189,
-      1625.8258850594,
-      3251.9862536323,
-      6504.3069874480,
-      13008.948453415,
-      26018.231384516,
-      52036.797246302,
-      104073.92896967,
-      208148.19241629,
-      416296.71930949,
-      832593.77309585,
-      1665187.8806686,
-      3330376.0958140,
-      6660752.5261049,
-      13321505.386687,
-      26643011.107850,
-      53286022.550177,
-      106572045.43483,
-      213144091.20414,
-      426288182.74275,
-      852576365.81999
-};
 
-    private double Ca;
-  /**
-   * The generated hash functions
-   */
-  private MurmurHash3 HashFunction;
+  private int[][] kMin; // the minimums
+  private double[][] kMin01; // the minimums in [0,1]
+  private int k = 3; // the order of the used minimum k>=2
+  private int numberOfBuckets = 1024; // number of buckets m>=1 to 2^31
+  private int Numbits = 10;
 
 
 
-  public MinCount(double error) {  
-       this.numofbucket =BitUtil.roundPowerOf2(Math.pow(1.05/error, 2));
-       this.Numbits=(int) (Math.log(numofbucket)/Math.log(2));
-       HashFunction=MurmurHash3.getInstance();
-       this.M = new byte[numofbucket];
-       //truncation rule parameters
-       this.truncatednumofbucket=(int)Math.floor(0.7*numofbucket);
-       this.Ca = mAlpha[Numbits]/numofbucket;
-       //restriction Rule parameters
-       B=Math.ceil(Math.log(Nmax/numofbucket)/Math.log(2)+3);
+  // alpha[log2(numberOfBuckets)]=numberOfBuckets*pow(exp(lgamma((double)3. -
+  // 1./((double)numberOfBuckets)))/2.,-numberOfBuckets)
+  protected static final double[] Alpha = {2.000000, 4.527074, 9.564176, 19.631417, 39.762721,
+      80.023805, 160.545229, 321.587709, 643.672484, 1287.841943, 2576.180816, 5152.858538,
+      10306.213972, 20612.924833, 41226.346553, 82453.189992, 164906.876868, 329814.250621,
+      659628.998109, 1319258.493138, 2638517.483002, 5277035.463036, 10554071.422489,
+      21108143.356138, 42216287.213608, 84432574.928546, 168865149.414817, 337730300.274572,
+      675460599.477796, 1350921197.884245, 2701842394.697141};
+
+
+  public MinCount(double eps) {
+
+
+    // Calculate numberOfBuckets from the desired error error=1/sqrt(M) M=K*m float numbers
+    numberOfBuckets = PowerOf2((int) (1 / (eps * eps * k)));// m=2^b
+    Numbits = (int) (Math.log(numberOfBuckets) / Math.log(2));
+    if (Numbits >= (Alpha.length - 1)) {
+      throw new IllegalArgumentException(
+          String.format("Max number of buckets (%d) exceeded: m=%d", Alpha.length - 1, Numbits));
+    }
+    this.kMin01 = new double[numberOfBuckets][k];
+    this.kMin = new int[numberOfBuckets][k];
+
+
+    /* initialize the tables of minima. */
+    for (int i = 0; i < numberOfBuckets; i++)
+      for (int j = 0; j < k; j++) {
+        kMin01[i][j] = 0;
+        kMin[i][j] = Integer.MAX_VALUE;
+      }
+
   }
 
-  public boolean offer(Object o) {
-    boolean affected = false;    
-    if(o!=null){
-               //hash the data value to get unsigned value
-                long v=HashFunction.hash64(o);
-                // get the first k bit to determine the bucket 
-             // get the first k bit to determine the bucket 
-                int j =(int)(v >>> (Long.SIZE - Numbits));
-                // calculating rho(bk+1,bk+2 ....)
-                byte r = (byte) (Long.numberOfLeadingZeros((v << Numbits) | (1 << (Numbits - 1))) + 1);
-                // get the max rho
-               if (M[j] < r) {
-                    M[j] = r;
-                    affected = true;
-                }           
+  /* Handle the minima with the new hashed value. */
+  public boolean offer(Object key) {
+
+    // hashing
+    long hashed = Integer.toUnsignedLong(MurmurHash.hash(key));
+
+    // get bucket number
+    // get the first b bit to determine the bucket
+
+    int bucket = (int) Long.remainderUnsigned(hashed, numberOfBuckets);
+
+    // truncate the b bits
+    int hashedValue = Integer.divideUnsigned((int) hashed, numberOfBuckets);
+    /* handle the problem of (hashed << 32) >> 32 when m=1 */
+    bucket = (bucket < numberOfBuckets) ? bucket : 0;
+
+    // update the corresponding bucket
+    int[] minBucket = kMin[bucket];
+
+    /*
+     * - The new hashed value is bigger than the 3d minimum: nothing to do. - It is the most common
+     * case. We save a lot of time of doing this test first.
+     */
+    if (minBucket[2] <= hashedValue)
+      return false;
+
+
+    if (minBucket[1] <= hashedValue) {
+
+      /* The word has already been seen. */
+      if (hashedValue == minBucket[1])
+        return false;
+
+      minBucket[2] = hashedValue;
+      return true;
     }
 
-        return affected;
+    if (minBucket[0] <= hashedValue) {
+
+      /* The word has already been seen. */
+      if (hashedValue == minBucket[0])
+        return false;
+
+      minBucket[2] = minBucket[1];
+      minBucket[1] = hashedValue;
+      return true;
     }
+
+
+    minBucket[2] = minBucket[1];
+    minBucket[1] = minBucket[0];
+    minBucket[0] = hashedValue;
+
+
+    return true;
+  }
+
+
 
   public long cardinality() {
-  
-  //take into account just the smallest m0 value and discard the rest
-    Arrays.sort(M);
-    for (int j = 0; j < truncatednumofbucket; j++)
-      //use register values that are in the interval [0...ceil(log2(nmax/m)+3)]
-       if(M[j]>0 && M[j]<B)
-        Rsum+=M[j];// the trancated sum
-    double Ravg = Rsum / (double) truncatednumofbucket;
-    return (long) Math.floor(Ca*truncatednumofbucket* Math.pow(2, Ravg));
-}
+
+
+    double R = 0;
+
+    int mthsize = Integer.divideUnsigned(Integer.MAX_VALUE + 1, numberOfBuckets);
+
+
+
+    /* Compute the Ke minimum in [0,1] */
+    /* If the minimum is 0 put it to 1/mthsize. */
+    for (int i = 0; i < numberOfBuckets; i++)
+      for (int j = 0; j < k; j++) {
+        kMin01[i][j] = ((double) kMin[i][j]) / ((double) mthsize);
+
+
+        if (kMin01[i][j] == 0)
+          kMin01[i][j] = ((double) 1.) / ((double) mthsize);
+      }
+
+
+    // calculate R=-1/m(sum ln(Mki))
+    for (int i = 0; i < numberOfBuckets; i++) {
+      R -= Math.log(kMin01[i][k - 1]);
+
+    }
+
+
+    // f_0
+    return (long) (Alpha[Numbits] * Math.exp(R / numberOfBuckets));
+
   }
+
+
+  /**
+   * @return the next power of 2 larger than the input number.
+   **/
+  int PowerOf2(final int intnum) {
+    int b = 1;
+    while (b < intnum) {
+      b = b << 1;
+    }
+    return b;
+  }
+
+}

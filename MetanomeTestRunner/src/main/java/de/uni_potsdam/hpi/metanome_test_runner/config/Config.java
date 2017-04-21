@@ -5,7 +5,7 @@ import java.io.File;
 public class Config {
 
 	public enum Algorithm {
-		DVFM
+		MYODDETECTOR
 	}
 	
 	public enum Dataset {
@@ -17,19 +17,18 @@ public class Config {
 	
 	public String inputDatasetName;
 	public String inputFolderPath = "data" + File.separator;
-    public String inputFileEnding = ".csv";
-    public char inputFileSeparator = '\t';
-    public char inputFileQuotechar = '\0';
-    public char inputFileEscape = '\0';
-    public int inputFileSkipLines = 0;
-    public boolean inputFileStrictQuotes = false;
-    public boolean inputFileIgnoreLeadingWhiteSpace = false;
-    public boolean inputFileHasHeader = false;
-    public boolean inputFileSkipDifferingLines = false;
-    public String inputFileNullString = "\\N";   
-	
+	public String inputFileEnding = ".csv";
+	public String inputFileNullString = "";
+	public char inputFileSeparator= ',';
+	public char inputFileQuotechar = '\"';
+	public char inputFileEscape = '\\';
+	public int inputFileSkipLines = 0;
 
-
+   
+	public boolean inputFileStrictQuotes = false;
+	public boolean inputFileIgnoreLeadingWhiteSpace = true;
+	public boolean inputFileHasHeader=false;
+	public boolean inputFileSkipDifferingLines = true; // Skip lines that differ from the dataset's schema
 	
 	public String measurementsFolderPath = "io" + File.separator + "measurements" + File.separator;
 	
@@ -39,7 +38,7 @@ public class Config {
 	public boolean writeResults = true;
 	
 	public Config() {
-		this(Config.Algorithm.DVFM, Config.Dataset.PLANETS);
+		this(Config.Algorithm.MYODDETECTOR, Config.Dataset.ABALONE);
 	}
 
 	public Config(Config.Algorithm algorithm, Config.Dataset dataset) {
@@ -58,13 +57,14 @@ public class Config {
 		this.dataset = dataset;
 		switch (dataset) {
 			case PLANETS:
-				this.inputDatasetName = "WDC_planetz";
-			 
-			   // this.inputDatasetName = "edit_note";
-				this.inputFileSeparator = ',';
-                this.inputFileHasHeader = true;
+				this.inputDatasetName = "artist";
+				this.inputFileSeparator = '\t';
+			     inputFileNullString = "\\N";
+			     inputFileQuotechar = '\0';
+			     inputFileEscape = '\0';
+			     
+				this.inputFileHasHeader = false;
 				break;
-
 			case SYMBOLS:
 				this.inputDatasetName = "WDC_symbols";
 				this.inputFileSeparator = ',';

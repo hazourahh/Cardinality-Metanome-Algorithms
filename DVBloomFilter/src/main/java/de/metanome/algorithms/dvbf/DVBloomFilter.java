@@ -1,42 +1,60 @@
 package de.metanome.algorithms.dvbf;
 
+
 import java.util.ArrayList;
 
 import de.metanome.algorithm_integration.AlgorithmConfigurationException;
 import de.metanome.algorithm_integration.AlgorithmExecutionException;
 import de.metanome.algorithm_integration.algorithm_types.BasicStatisticsAlgorithm;
+import de.metanome.algorithm_integration.algorithm_types.IntegerParameterAlgorithm;
+import de.metanome.algorithm_integration.algorithm_types.ListBoxParameterAlgorithm;
 import de.metanome.algorithm_integration.algorithm_types.RelationalInputParameterAlgorithm;
-import de.metanome.algorithm_integration.algorithm_types.StringParameterAlgorithm;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirement;
+import de.metanome.algorithm_integration.configuration.ConfigurationRequirementInteger;
+import de.metanome.algorithm_integration.configuration.ConfigurationRequirementListBox;
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementRelationalInput;
-import de.metanome.algorithm_integration.configuration.ConfigurationRequirementString;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 
-/**
- * * Implementation of Linear Counting algorithm.
- * * Reference: Whang, K. Y., Vander-Zanden, B. T., & Taylor, H. M. (1990). A linear-time probabilistic counting algorithm for database applications.
- *   ACM Transactions on Database Systems (TODS), 15(2), 208-229 
- * * @author Hazar.Harmouch
- */
+
 
 public class DVBloomFilter extends DVBloomFilterAlgorithm implements BasicStatisticsAlgorithm,
-    RelationalInputParameterAlgorithm, StringParameterAlgorithm {
+    RelationalInputParameterAlgorithm, ListBoxParameterAlgorithm, IntegerParameterAlgorithm {
+
+
+  String APROACH1 = "Swamidass, S. J., & Baldi, P. (2007)";
+  String APROACH2 = "Papapetrou, O., Siberski, W., & Nejdl, W. (2010)";
 
   public enum Identifier {
-    INPUT_GENERATOR, STANDARD_ERROR
+    INPUT_GENERATOR, Num_bits_per_element, APPROACH
   };
 
   @Override
   public ArrayList<ConfigurationRequirement<?>> getConfigurationRequirements() {
     ArrayList<ConfigurationRequirement<?>> conf = new ArrayList<>();
-    conf.add(new ConfigurationRequirementRelationalInput(DVBloomFilter.Identifier.INPUT_GENERATOR.name()));
-    ConfigurationRequirementString inputstandard_error =
-        new ConfigurationRequirementString(DVBloomFilter.Identifier.STANDARD_ERROR.name());
-    inputstandard_error.setRequired(false);
-    String[] Defaults={"0.01"};
-    inputstandard_error.setDefaultValues(Defaults);
-    conf.add(inputstandard_error);
+
+    conf.add(new ConfigurationRequirementRelationalInput(
+        DVBloomFilter.Identifier.INPUT_GENERATOR.name()));
+
+
+    ConfigurationRequirementInteger bits =
+        new ConfigurationRequirementInteger(DVBloomFilter.Identifier.Num_bits_per_element.name());
+    bits.setRequired(false);
+    Integer[] defaults = {4};
+    bits.setDefaultValues(defaults);
+    conf.add(bits);
+
+
+    ArrayList<String> methods = new ArrayList<>();
+    methods.add(APROACH1);
+    methods.add(APROACH2);
+
+    ConfigurationRequirementListBox approach =
+        new ConfigurationRequirementListBox(DVBloomFilter.Identifier.APPROACH.name(), methods);
+
+    approach.setRequired(false);
+    conf.add(approach);
+
     // conf.add(new
     // ConfigurationRequirementRelationalInput(MyIndDetector.Identifier.INPUT_GENERATOR.name(),
     // ConfigurationRequirement.ARBITRARY_NUMBER_OF_VALUES)); // For IND discovery, the number of
@@ -69,38 +87,57 @@ public class DVBloomFilter extends DVBloomFilterAlgorithm implements BasicStatis
   }
 
   @Override
-  public void setStringConfigurationValue(String identifier, String... values)
+  public void setIntegerConfigurationValue(String identifier, Integer... values)
       throws AlgorithmConfigurationException {
-    if (DVBloomFilter.Identifier.STANDARD_ERROR.name().equals(identifier)) {
+    if (DVBloomFilter.Identifier.Num_bits_per_element.name().equals(identifier))
       if (values != null && !values[0].equals("")) {
         try {
-          double error = Double.parseDouble(values[0]);
-          if (error > 0 && error < 1)
-            this.eps = error;
+          int bits = values[0];
+          if (bits > 0 && bits < 15)
+            this.bitperelement = bits;
           else
             throw new Exception();
         } catch (Exception ex) {
           throw new AlgorithmConfigurationException(
-              "The Standard Error Epsilon should be a positive double in (0, 1) range");
+              "number of bits per element should be a positive double in (1, 8) range");
         }
 
       }
-
-
-    }
 
 
   }
 
   @Override
   public String getAuthors() {
-   
+
     return "Hazar Harmouch";
   }
 
   @Override
   public String getDescription() {
-    return "Linear Counting Cardinality Estimator. Whang, K. Y., Vander-Zanden, B. T., & Taylor, H. M. (1990). A linear-time probabilistic counting algorithm for database applications. ACM Transactions on Database Systems (TODS), 15(2), 208-229.";
+    return "Bloom filters";
   }
+
+  @Override
+  public void setListBoxConfigurationValue(String identifier, String... values)
+      throws AlgorithmConfigurationException {
+    if (DVBloomFilter.Identifier.APPROACH.name().equals(identifier)) {
+      if (values != null && !values[0].equals("")) {
+        try {
+          if (values[0].equals(APROACH1))
+            this.approache = 0;
+          else if (values[0].equals(APROACH2))
+            this.approache = 1;
+          else
+            throw new Exception();
+        } catch (Exception ex) {
+          throw new AlgorithmConfigurationException("please choose an approach");
+        }
+
+      }
+    }
+  }
+
+
 
 }

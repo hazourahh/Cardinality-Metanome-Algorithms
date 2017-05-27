@@ -4,30 +4,31 @@ package de.metanome.algorithms.dvakmv;
 import java.util.TreeSet; 
 
 /**
- * * Implementation of Probabilistic counting algorithm or FM Sketch.
- * * Reference:
- *    Implementation is based on the paper: "On synopses for distinct-value estimation under multiset operations" by Beyer et al, 2007. 
- * * 
+ * * Implementation of AKMV
+ *  @author Hazar.Harmouch
  */
 
 public class AKMV { 
   private TreeSet<Integer> kMin;
+  //the order of the used minimum
   private int k=4096;//for eps=0.01
 
-
   
-
+  /**
+   * @param
+   * eps theoretical standard error
+   */
   public  AKMV(double eps) {
       this.kMin = new TreeSet<Integer>();
-     
       this.k = PowerOf2( (int) (2+(2/(Math.PI*eps*eps))));
- 
   }
   
-  public boolean offer(Object key) {
-   
-  int idx =MurmurHash.hash(key)& Integer.MAX_VALUE;
-      
+  /**
+   * @param
+   * key a new element from the dataset 
+   */
+  public boolean offer(Object key) { 
+  int idx =MurmurHash.hash(key)& Integer.MAX_VALUE; 
       if (kMin.size() < k) {
           if (!kMin.contains(idx)) {
               kMin.add(idx);
@@ -45,6 +46,9 @@ public class AKMV {
       return false;
   }
   
+  /**
+   * @return the cardinality estimation.
+   **/
   public long cardinality() {
       if (kMin.size() < k)
           return kMin.size(); //exact 
@@ -52,6 +56,8 @@ public class AKMV {
       { 
         return     (long) ((k - 1.0) * Integer.MAX_VALUE) / (kMin.last());}
   }
+ 
+  
   
   /**
    * @return the next power of 2 larger than the input number.

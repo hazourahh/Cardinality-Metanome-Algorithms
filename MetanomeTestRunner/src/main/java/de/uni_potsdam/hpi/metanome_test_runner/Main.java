@@ -11,15 +11,15 @@ import de.uni_potsdam.hpi.metanome_test_runner.utils.*;
 public class Main {
 
   public static void main(String[] args) {
-    MetanomeTestRunner.run();
-    // MetanomeTestRunner.run(args);
+   MetanomeTestRunner.run();
+    //MetanomeTestRunner.run(args);
 
-    //generate()
+   //generate();
 
   }
 
 
-  void generate() {
+  static void generate() {
     Config conf = new Config();
     ArrayList<Long> cardinality = new ArrayList<>();
     //1 to 9
@@ -27,8 +27,8 @@ public class Main {
       cardinality.add((long) Math.pow(10, i));
 
     String outputPath = conf.measurementsFolderPath + "generated" + File.separator;
-    //5 runs
-    for (int n = 0; n < 5; n++) {
+    //10 runs
+    for (int n = 0; n < 10; n++) {
       MersenneTwisterFast rnd = new MersenneTwisterFast();
 
       for (int i = 0; i < cardinality.size(); i++) {

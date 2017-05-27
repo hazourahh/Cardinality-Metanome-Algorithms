@@ -11,13 +11,12 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 /**
- * * Implementation of Probabilistic counting algorithm or FM Sketch.
+ * * Implementation of AKMV.
  * * Reference:
- *   Flajolet, Philippe, and G. Nigel Martin. "Probabilistic counting algorithms
- *   for data base applications." Journal of computer and system sciences 31.2 
- *   (1985): 182-209. 
+ *    AKMV. Beyer, K., Gemulla, R., Haas, P. J., Reinwald, B., & Sismanis, Y. (2009). Distinct-value synopses for multiset operations. Communications of the ACM, 52(10), 87-95. 
  * * @author Hazar.Harmouch
  */
+
 public class DVAKMVAlgorithm {
 	
 	protected RelationalInputGenerator inputGenerator = null;

@@ -31,23 +31,39 @@ public class MetanomeMock {
 
 	public static void execute(Config conf,double eps) {
 	  String[] error={eps+""};
-//	  execute_AKMV(conf,error);
-//	  execute_HyperLogLogplus(conf);
-//	  execute_Mincount(conf,error);
-//	  execute_HyperLogLog(conf,error);
-//	  execute_AMS(conf);
-//	  execute_PCSA(conf,error);
-//	  execute_BF(conf, 0);
-//	  execute_BF(conf, 1);
-//	  execute_SuperLogLog(conf,error);
-//      execute_LogLog(conf,error);
-//	  execute_LC(conf,error);
-//	  execute_BJKST(conf,error);
-//	  execute_exact(conf);
-	  execute_FM(conf,error);
 
-			}
-	
+//	  execute_AKMV(conf,error);
+//
+//	 execute_HyperLogLogplus(conf);
+//
+//	  execute_Mincount(conf,error);
+//
+//	  execute_HyperLogLog(conf,error);
+//
+//	  execute_AMS(conf);
+//
+//	  execute_PCSA(conf,error);
+//
+//	 execute_BF(conf, 0);
+//
+//	  execute_BF(conf, 1);
+//
+//	  execute_SuperLogLog(conf,error);
+//
+//      execute_LogLog(conf,error);
+//
+//	  execute_LC(conf,error);
+//
+//	  execute_BJKST(conf,error);
+
+//	 execute_exact(conf);
+    
+       
+    execute_FM(conf,error);
+
+//       
+			
+	}
 	private static String format(List<Result> results) {
 		StringBuilder builder = new StringBuilder();
 		for (Result result : results) {

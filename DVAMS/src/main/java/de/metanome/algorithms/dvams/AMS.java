@@ -12,20 +12,22 @@ package de.metanome.algorithms.dvams;
 
 
 public class AMS {
+  //the maximum rho or the number of leading 0s in the bitmap
   private int R;
 
 
   public AMS() {
-    R = 0;
-   
-  }
+    R = 0; }
 
-
-  public boolean offer(Object o) {
+  /**
+   * @param
+   * key a new element from the dataset 
+   */
+  public boolean offer(Object key) {
     boolean affected = false;
-    if (o != null) {
+    if (key != null) {
       // non-negative hash values
-      long v = MurmurHash.hash64(o);
+      long v = MurmurHash.hash64(key);
       // calculating the position of the most significant bit that set to 1 in the final bitmap but
       // while we do not save bitmap so we save the max trailing zero number over all the traffic
       int r = rho(v);
@@ -39,7 +41,9 @@ public class AMS {
   }
 
 
-
+  /**
+   * @return the cardinality estimation.
+   **/
   public long cardinality() {
     return (long) (Math.pow(2, R));
   }

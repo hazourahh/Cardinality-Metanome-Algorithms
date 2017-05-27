@@ -11,6 +11,14 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 
+/**
+ * * Implementation of AMS 
+ * *  Reference:
+ *    Alon, N., Matias, Y., & Szegedy, M. (1996, July). The space complexity of approximating the frequency moments. 
+ *    In Proceedings of the twenty-eighth annual ACM symposium on Theory of computing (pp. 20-29). ACM.
+ * * @author Hazar.Harmouch
+ */
+
 public class DVAMSAlgorithm {
 	
 	protected RelationalInputGenerator inputGenerator = null;

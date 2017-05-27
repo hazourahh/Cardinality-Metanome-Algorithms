@@ -13,9 +13,9 @@ import de.metanome.algorithm_integration.configuration.ConfigurationRequirementS
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 /**
- * * Implementation of Probabilistic counting algorithm or FM Sketch.
+ * * Implementation of AKMV.
  * * Reference:
- *    Implementation is based on the paper: "On synopses for distinct-value estimation under multiset operations" by Beyer et al, 2007. 
+ *    AKMV. Beyer, K., Gemulla, R., Haas, P. J., Reinwald, B., & Sismanis, Y. (2009). Distinct-value synopses for multiset operations. Communications of the ACM, 52(10), 87-95. 
  * * @author Hazar.Harmouch
  */
 

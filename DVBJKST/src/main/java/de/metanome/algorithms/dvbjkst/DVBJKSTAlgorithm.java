@@ -10,7 +10,13 @@ import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
-
+/**
+ * BJKST algorithm for distinct counting.
+ * 
+ * Reference: Bar-Yossef, Ziv, et al. "Counting distinct elements in a data stream." Randomization
+ * and Approximation Techniques in Computer Science. Springer Berlin Heidelberg, 2002. 1-10.
+ * @author Hazar.Harmouch
+ */
 public class DVBJKSTAlgorithm {
 	
 	protected RelationalInputGenerator inputGenerator = null;

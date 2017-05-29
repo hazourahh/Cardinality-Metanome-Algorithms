@@ -13,7 +13,16 @@ import de.metanome.algorithm_integration.configuration.ConfigurationRequirementI
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementRelationalInput;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
-
+/**
+* Implementation of HyperLogLogplus 
+* Reference: Heule, S., Nunkesser, M., & Hall, A. (2013, March).
+* HyperLogLog in practice: algorithmic engineering of a state of the art cardinality estimation
+* algorithm. In Proceedings of the 16th International Conference on Extending Database Technology
+* (pp. 683-692). ACM.Hyperloglog. Flajolet, P., Fusy, É., Gandouet, O., & Meunier, F. (2008).
+* Hyperloglog: the analysis of a near-optimal cardinality estimation algorithm. DMTCS Proceedings,
+* (1). 
+* * @author Hazar.Harmouch 
+*/
 
 public class DVHyperLogLogPlus extends DVHyperLogLogAlgorithmplus implements
     BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, IntegerParameterAlgorithm {

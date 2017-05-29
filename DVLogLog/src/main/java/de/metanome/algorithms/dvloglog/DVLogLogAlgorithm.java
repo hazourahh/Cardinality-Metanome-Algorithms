@@ -11,6 +11,12 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 
+/** Implementation of LogLog
+ ** Reference:
+ *   Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg.
+ * * @author Hazar.Harmouch
+ * *  
+ */
 public class DVLogLogAlgorithm {
 	
 	protected RelationalInputGenerator inputGenerator = null;

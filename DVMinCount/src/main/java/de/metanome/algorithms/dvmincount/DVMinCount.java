@@ -13,7 +13,13 @@ import de.metanome.algorithm_integration.configuration.ConfigurationRequirementS
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 
-
+/**
+ * Implementation of MinCount algorithm 
+ * "F. Giroire. Order statistics and estimating cardinalities of massive data sets. Discrete Applied Mathematics, 157(2):406-427, 2009"
+ * 
+ * @author Hazar.Harmouch
+ *
+ */
 public class DVMinCount extends DVMinCountAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm  {
 
 	public enum Identifier {

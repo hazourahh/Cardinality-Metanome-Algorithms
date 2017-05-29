@@ -1,10 +1,10 @@
-package de.metanome.algorithms.dvpcsa;
+package de.metanome.algorithms.dvsuperloglog;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DVCLTest {
+public class DVSuperLogLogTest {
 
   @Before
   public void setUp() throws Exception {

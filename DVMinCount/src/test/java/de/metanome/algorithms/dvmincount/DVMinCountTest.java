@@ -1,10 +1,10 @@
-package de.metanome.algorithms.dvfm;
+package de.metanome.algorithms.dvmincount;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DVCLTest {
+public class DVMinCountTest {
 
   @Before
   public void setUp() throws Exception {

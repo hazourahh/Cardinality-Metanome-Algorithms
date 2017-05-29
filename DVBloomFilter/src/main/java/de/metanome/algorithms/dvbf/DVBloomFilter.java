@@ -15,8 +15,14 @@ import de.metanome.algorithm_integration.configuration.ConfigurationRequirementL
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementRelationalInput;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
-
-
+/**
+*
+*@author Hazar.Harmouch
+*Referances:
+*S. J. Swamidass and P. Baldi. Mathematical correction for ngerprint similarity measures to improve chemical retrieval. Journal of chemical information and modeling, 47(3):952-964, 2007
+*O. Papapetrou, W. Siberski, and W. Nejdl. Cardinality estimation and dynamic length adaptation for Bloom filters. Distributed and Parallel Databases, 28(2):119{156, 2010
+*
+*/
 
 public class DVBloomFilter extends DVBloomFilterAlgorithm implements BasicStatisticsAlgorithm,
     RelationalInputParameterAlgorithm, ListBoxParameterAlgorithm, IntegerParameterAlgorithm {

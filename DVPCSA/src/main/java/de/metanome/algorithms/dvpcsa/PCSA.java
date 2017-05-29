@@ -5,10 +5,11 @@ import java.util.BitSet;
 
 
 /**
- * * Implementation of Probabilistic Counting with Stochastic Averaging algorithm. * Reference:
+ * * Implementation of Probabilistic Counting with Stochastic Averaging algorithm. 
+ * * Reference:
  * Flajolet, Philippe, and G. Nigel Martin. "Probabilistic counting algorithms for data base
- * applications." Journal of computer and system sciences 31.2 (1985): 182-209. * @author
- * Hazar.Harmouch
+ * applications." Journal of computer and system sciences 31.2 (1985): 182-209. 
+ * * @author  Hazar.Harmouch
  */
 public class PCSA {
   /**

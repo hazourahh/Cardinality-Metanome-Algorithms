@@ -1,10 +1,10 @@
-package de.metanome.algorithms.dvbf;
+package de.metanome.algorithms.dvfm;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DVCLTest {
+public class DVFMTest {
 
   @Before
   public void setUp() throws Exception {

@@ -11,11 +11,13 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 /**
- * * Implementation of Linear Counting algorithm.
- * * Reference: Whang, K. Y., Vander-Zanden, B. T., & Taylor, H. M. (1990). A linear-time probabilistic counting algorithm for database applications.
- *   ACM Transactions on Database Systems (TODS), 15(2), 208-229 
- * * @author Hazar.Harmouch
- */
+*
+*@author Hazar.Harmouch
+*Referances:
+*S. J. Swamidass and P. Baldi. Mathematical correction for ngerprint similarity measures to improve chemical retrieval. Journal of chemical information and modeling, 47(3):952-964, 2007
+*O. Papapetrou, W. Siberski, and W. Nejdl. Cardinality estimation and dynamic length adaptation for Bloom filters. Distributed and Parallel Databases, 28(2):119{156, 2010
+*
+*/
 public class DVBloomFilterAlgorithm {
 
   protected RelationalInputGenerator inputGenerator = null;

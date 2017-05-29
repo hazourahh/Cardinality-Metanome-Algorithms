@@ -9,7 +9,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntRBTreeMap;
  * 
  * Reference: Bar-Yossef, Ziv, et al. "Counting distinct elements in a data stream." Randomization
  * and Approximation Techniques in Computer Science. Springer Berlin Heidelberg, 2002. 1-10.
- * 
+ * @author Hazar.Harmouch
  */
 public class BJKST {
 
@@ -30,7 +30,10 @@ private int hseed=9001;
 private int gseed=8000; 
  
  
-  // epsilon: the desired error limit
+/**
+* @param 
+* epsilon: the desired error limit
+*/
   public BJKST(double epsilon) {
     this.error = epsilon;
     this.maxbufferSize = (int) ((this.C) / Math.pow(this.error, 2.0));
@@ -44,9 +47,7 @@ private int gseed=8000;
 if(o!=null){
     int zereosP  = Long.numberOfTrailingZeros(MurmurHash.hash64(o,hseed));
     if (zereosP >= this.Zlevel) {
-      //call  g hash function 
-     
-      buffer.put(Long.toBinaryString(MurmurHash.hash64(o,gseed)), zereosP);
+     buffer.put(Long.toBinaryString(MurmurHash.hash64(o,gseed)), zereosP);
       while (buffer.size() >= maxbufferSize) {
         this.Zlevel = this.Zlevel + 1;
         for (Iterator<Entry<String, Integer>> itr = buffer.entrySet().iterator(); itr.hasNext();) {
@@ -60,6 +61,9 @@ if(o!=null){
 }
   }
 
+  /**
+   * @return the cardinality estimation.
+   **/
   public long cardinality() {
     int finalEstimate = (int) (Math.pow(2.0,this.Zlevel) * buffer.size());
     return finalEstimate;

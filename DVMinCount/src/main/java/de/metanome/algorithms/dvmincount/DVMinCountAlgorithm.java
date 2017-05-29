@@ -11,6 +11,13 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 
+/**
+ * Implementation of MinCount algorithm 
+ * "F. Giroire. Order statistics and estimating cardinalities of massive data sets. Discrete Applied Mathematics, 157(2):406-427, 2009"
+ * 
+ * @author Hazar.Harmouch
+ *
+ */
 public class DVMinCountAlgorithm {
 	
 	protected RelationalInputGenerator inputGenerator = null;

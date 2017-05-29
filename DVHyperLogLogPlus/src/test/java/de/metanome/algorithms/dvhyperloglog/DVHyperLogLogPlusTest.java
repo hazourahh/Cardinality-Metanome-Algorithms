@@ -1,10 +1,10 @@
-package de.metanome.algorithms.dvmincount;
+package de.metanome.algorithms.dvhyperloglog;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DVCLTest {
+public class DVHyperLogLogPlusTest {
 
   @Before
   public void setUp() throws Exception {

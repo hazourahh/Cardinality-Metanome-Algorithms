@@ -2,8 +2,6 @@ package de.metanome.algorithms.dvsuperloglog;
 
 import java.util.Arrays;
 
-
-
 /** Implementation of SuperLogLog
  ** Reference:
  *   Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg.

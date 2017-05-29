@@ -1,10 +1,10 @@
-package de.metanome.algorithms.dvloglog;
+package de.metanome.algorithms.dvbf;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class DVCLTest {
+public class DVBFTest {
 
   @Before
   public void setUp() throws Exception {

@@ -11,6 +11,11 @@ import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultRe
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
 
+/** Implementation of HyperLogLog
+ ** Reference:
+ *  Flajolet, P., Fusy, É., Gandouet, O., & Meunier, F. (2008). Hyperloglog: the analysis of a near-optimal cardinality estimation algorithm. DMTCS Proceedings, (1).
+ * * @author Hazar.Harmouch
+*/
 public class DVHyperLogLogAlgorithm {
 	
 	protected RelationalInputGenerator inputGenerator = null;

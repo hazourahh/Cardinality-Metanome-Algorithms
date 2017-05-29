@@ -3,7 +3,7 @@ package de.metanome.algorithms.dvmincount;
 
 
 /**
- * java port of the c code by
+ * Implementation of MinCount algorithm 
  * "F. Giroire. Order statistics and estimating cardinalities of massive data sets. Discrete Applied Mathematics, 157(2):406-427, 2009"
  * 
  * @author Hazar.Harmouch

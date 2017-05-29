@@ -12,7 +12,11 @@ import de.metanome.algorithm_integration.configuration.ConfigurationRequirementR
 import de.metanome.algorithm_integration.configuration.ConfigurationRequirementString;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
-
+/** Implementation of SuperLogLog
+ ** Reference:
+ *   Durand, M., & Flajolet, P. (2003). Loglog counting of large cardinalities. In Algorithms-ESA 2003 (pp. 605-617). Springer Berlin Heidelberg.
+ * * @author Hazar.Harmouch
+ */
 
 public class DVSuperLogLog extends DVSuperLogLogAlgorithm implements BasicStatisticsAlgorithm, RelationalInputParameterAlgorithm, StringParameterAlgorithm  {
 

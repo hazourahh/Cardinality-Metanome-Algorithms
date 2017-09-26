@@ -4,6 +4,7 @@ package de.metanome.algorithms.dva;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import de.metanome.algorithm_integration.AlgorithmExecutionException;
 import de.metanome.algorithm_integration.ColumnIdentifier;
@@ -12,7 +13,7 @@ import de.metanome.algorithm_integration.input.RelationalInputGenerator;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
-import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
+//import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
 
 /**Use Hash Table to calculate the exact distinct value number
  *  @author Hazar.Harmouch**/
@@ -25,7 +26,8 @@ public class DVAAlgorithm {
   protected final String NUMBEROFDISTINCT = "Number of Distinct Values";
   protected String relationName;
   protected List<String> columnNames;
-  protected ArrayList<ObjectOpenHashSet<String>> Columns;
+ // protected ArrayList<ObjectOpenHashSet<String>> Columns;
+  protected ArrayList<HashSet<String>> Columns;
   protected RelationalInput input;
   
   public void execute() throws AlgorithmExecutionException {
@@ -40,8 +42,8 @@ public class DVAAlgorithm {
     this.columnNames = input.columnNames();
     Columns=new ArrayList<>();
     for (int i = 0; i < columnNames.size(); i++)
-      Columns.add(new ObjectOpenHashSet<String>());
-   
+      //Columns.add(new ObjectOpenHashSet<String>());
+      Columns.add(new HashSet<String>());
       //pass over the data
     while (input.hasNext()) {
       List<String> CurrentTuple=input.next();

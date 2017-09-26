@@ -3,6 +3,7 @@ package de.uni_potsdam.hpi.metanome_test_runner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import de.uni_potsdam.hpi.metanome_test_runner.config.Config;
 import de.uni_potsdam.hpi.metanome_test_runner.utils.*;
@@ -15,6 +16,7 @@ public class Main {
     //MetanomeTestRunner.run(args);
 
    //generate();
+   //generate_withrepetaion();
 
   }
 
@@ -46,5 +48,35 @@ public class Main {
         }
       }
     }
+  }
+  
+  
+  static void generate_withrepetaion() {
+    Config conf = new Config();
+    long datasetsize=(long) Math.pow(10,11);
+    ArrayList<Integer> cardinality = new ArrayList<>();
+    //1 to 10
+    for (int i = 1; i < 10; i++)
+      cardinality.add((int) Math.pow(10, i));
+
+    String outputPath = conf.measurementsFolderPath + "generated" + File.separator;
+
+   
+    //Random rn = new Random();
+    MersenneTwisterFast rnd = new MersenneTwisterFast();
+      for (int i = 0; i < cardinality.size(); i++) {
+
+        int current = cardinality.get(i);
+
+        try {
+          for (int j = 0; j <= datasetsize; j++) {
+
+            FileUtils.writeToFile(rnd.nextInt(current) + "\n",
+                outputPath + "generated"+ "_" + (i+1) + ".csv");
+          }
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
   }
 }

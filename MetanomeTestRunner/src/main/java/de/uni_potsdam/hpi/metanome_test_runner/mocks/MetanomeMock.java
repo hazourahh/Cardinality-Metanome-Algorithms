@@ -136,6 +136,7 @@ try {
 	public static void execute_sampling(Config conf, String[] sampling_rate) {
       try {
           //sampling_rate[0]="0.2";
+       // conf.inputDatasetName="generated_0_2";
           RelationalInputGenerator inputGenerator = new DefaultFileInputGenerator(new ConfigurationSettingFileInput(
                   conf.inputFolderPath + conf.inputDatasetName + conf.inputFileEnding, true,
                   conf.inputFileSeparator, conf.inputFileQuotechar, conf.inputFileEscape, conf.inputFileStrictQuotes, 

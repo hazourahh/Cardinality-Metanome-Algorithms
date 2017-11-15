@@ -7,16 +7,16 @@ public class MetanomeTestRunner {
 
   public static String[] inputTableNames =
    {
-      "generated_0_1",
-     "generated_0_2",  
-     "generated_0_3",
-     "generated_0_4",
-     "generated_0_5",
-     "generated_0_6",
-    "generated_0_7",
-     "generated_0_8",
+//      "generated_0_1",
+//     "generated_0_2",  
+//     "generated_0_3",
+//     "generated_0_4",
+//     "generated_0_5",
+//     "generated_0_6",
+//    "generated_0_7",
+    "generated_0_8",
     "generated_0_9",
-//     "generated_1_1",
+////     "generated_1_1",
 //     "generated_1_2",  
 //     "generated_1_3",
 //     "generated_1_4",
@@ -124,31 +124,31 @@ public class MetanomeTestRunner {
 //     "ncvoter-column10",
 //      "ncvoter-column14",
      //--------------------------------------------
-      "ncvoter-column1",
-      "ncvoter-column2",
-      "ncvoter-column3",
-      "ncvoter-column4",
-      "ncvoter-column5",
-      "ncvoter-column6",
-      "ncvoter-column7",
-      "ncvoter-column8",
-      "ncvoter-column9",
-      "ncvoter-column10",
-      "ncvoter-column11",
-      "ncvoter-column12",
-      "ncvoter-column13",
-      "ncvoter-column14",
-      "ncvoter-column15",
-      "ncvoter-column16",
-      "ncvoter-column17",
-      "ncvoter-column18",
-      "ncvoter-column19",
-      "ncvoter-column20",
-      "ncvoter-column21",
-      "ncvoter-column22",
-      "ncvoter-column23",
-      "ncvoter-column24",
-      "ncvoter-column25",
+//      "ncvoter-column1",
+//      "ncvoter-column2",
+//      "ncvoter-column3",
+//      "ncvoter-column4",
+//      "ncvoter-column5",
+//      "ncvoter-column6",
+//      "ncvoter-column7",
+//      "ncvoter-column8",
+//      "ncvoter-column9",
+//      "ncvoter-column10",
+//      "ncvoter-column11",
+//      "ncvoter-column12",
+//      "ncvoter-column13",
+//      "ncvoter-column14",
+//      "ncvoter-column15",
+//      "ncvoter-column16",
+//      "ncvoter-column17",
+//      "ncvoter-column18",
+//      "ncvoter-column19",
+//      "ncvoter-column20",
+//      "ncvoter-column21",
+//      "ncvoter-column22",
+//      "ncvoter-column23",
+//      "ncvoter-column24",
+//      "ncvoter-column25",
 //--------------sorted by cardinality-----------------------------
 //     "openaddress5",
 //     "openaddress8",
@@ -162,31 +162,45 @@ public class MetanomeTestRunner {
 //      "openaddress1",
 //     "openaddress11",  
      
-//-------------------------------------------
-      "openaddress1",
-      "openaddress2",
-      "openaddress3",
-      "openaddress4",
-      "openaddress5",
-      "openaddress6",
-      "openaddress7",
-      "openaddress8",
-      "openaddress9",
-      "openaddress10",
-      "openaddress11",
+//------------------------by size-------------------
+//      "openaddress5",
+//      "openaddress8",
+//      "openaddress7",
+//      "openaddress10",
+//      "openaddress6",
+//      "openaddress9",
+//      "openaddress4",
+//      "openaddress3",
+//      "openaddress11",
+//      "openaddress1",
+//      "openaddress2",
+//  
+      
+ //==================================     
+//      "openaddress1",
+//      "openaddress2",
+//      "openaddress3",
+//      "openaddress4",
+//      "openaddress5",
+//      "openaddress6",
+//      "openaddress7",
+//      "openaddress8",
+//      "openaddress9",
+//      "openaddress10",
+//      "openaddress11",
      
     };
   
 public static double eps=0.01;
 	public static void run() {
 		Config conf = new Config();
-		double eps=0.1;
+		double eps=0.2;
 		while (eps<=1)
 		{
 		for(int i=0; i<inputTableNames.length;i++)
  
 	{conf.inputDatasetName=inputTableNames[i];
-     for(int j=0;j<5;j++)
+    // for(int j=0;j<5;j++)
 		  
         MetanomeMock.execute(conf,eps);
         }

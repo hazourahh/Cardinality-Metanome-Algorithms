@@ -16,7 +16,6 @@ import de.metanome.algorithm_integration.ColumnIdentifier;
 import de.metanome.algorithm_integration.input.InputIterationException;
 import de.metanome.algorithm_integration.input.RelationalInput;
 import de.metanome.algorithm_integration.input.RelationalInputGenerator;
-import de.metanome.algorithm_integration.input.RelationalInputGeneratorInitializer;
 import de.metanome.algorithm_integration.result_receiver.BasicStatisticsResultReceiver;
 import de.metanome.algorithm_integration.results.BasicStatistic;
 import de.metanome.algorithm_integration.results.basic_statistic_values.BasicStatisticValueLong;
@@ -72,18 +71,19 @@ public class DVGEEAlgorithm {
    //sampling
    input = this.inputGenerator.generateNewCopy();
    Iterator<IntermediateSampleData<List<String>>> samples=ReservoirSamplingWithoutReplacement(input,r);
-   
+   System.out.println("done sapling");
    //update frequency
    while (samples.hasNext()) 
    { List<String> CurrentTuple=samples.next().getElement();
      for (int i = 0; i < columnNames.size(); i++)
    {String currentvalue=CurrentTuple.get(i);
-   System.out.println(i+"sample"+currentvalue);
+
    Columns.get(i).UpdateColumnValuesFrequency(currentvalue);
    }
    
    
    }
+   System.out.println("done update frequency");
 //   //generate k random index.
 //   IntArrayList indexes=new IntArrayList();
 //   MersenneTwisterFast rn = new MersenneTwisterFast();
@@ -127,7 +127,7 @@ public class DVGEEAlgorithm {
  
   private Iterator<IntermediateSampleData<List<String>>> ReservoirSamplingWithoutReplacement(RelationalInput data,int numSamples) throws InputIterationException
   {
-    Random random= new Random(3);
+    Random random= new Random();
  // This queue holds fixed number elements with the top K weight for current partition.
     PriorityQueue<IntermediateSampleData<List<String>>> queue = new PriorityQueue<IntermediateSampleData<List<String>>>(numSamples);
     int index = 0;

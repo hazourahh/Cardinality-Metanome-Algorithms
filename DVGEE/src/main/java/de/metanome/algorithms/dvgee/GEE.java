@@ -1,15 +1,17 @@
 package de.metanome.algorithms.dvgee;
 
-import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
+
+
+import java.util.HashMap;
+
 
 public class GEE {
 
-  Object2IntOpenHashMap<String> Frequencymap;
+  HashMap<String,Integer> Frequencymap;
   
   public GEE() {
   
-    Frequencymap = new Object2IntOpenHashMap<String>();
+    Frequencymap = new HashMap<String,Integer>();
   }
   
   /**
@@ -17,12 +19,12 @@ public class GEE {
    * @param value:  a new value of column <code> i</code> from a sample
    */
   public void UpdateColumnValuesFrequency(String value)
-  {
-    if(Frequencymap.containsKey(value))
-        Frequencymap.put(value,  Frequencymap.getInt(value)+1);
+  {if(value!=null && !value.isEmpty())
+    {if(Frequencymap.containsKey(value))
+        Frequencymap.put(value,  Frequencymap.get(value)+1);
      else
        Frequencymap.put(value,1);  
-    
+    }
   }
   
   /**
@@ -33,23 +35,24 @@ public class GEE {
    */
   public int getColumnCardinalityEstimation(int r,int num_tuples)
   {
-  int sum_fi=0;
+    int sum_fi=0;
+HashMap<Integer,Integer> f_i=new HashMap<Integer,Integer>(r);
+  for (HashMap.Entry<String,Integer> entry :Frequencymap.entrySet())
+  {
+    int current_value= entry.getValue();
+    if(f_i.containsKey(current_value))
+      f_i.put(current_value, f_i.get(current_value)+1);
+    else
+      f_i.put(current_value,1);
+  }
+   
   for(int i=2;i<=r;i++)
-    sum_fi+=getF_i(i);
-  return (int) Math.ceil(Math.sqrt(num_tuples/r)*getF_i(1)+sum_fi);
+    if(f_i.containsKey(i))
+       sum_fi+=f_i.get(i);
+  System.out.println("done f2-n frequency");
+  int f_1=0;
+  if(f_i.containsKey(1)) f_1=f_i.get(1);
+  return (int) Math.ceil(Math.sqrt(num_tuples/r)*f_1+sum_fi);
  }
 
- /**
-  * 
-  * @return the number of items that exactly occurs <code> frequency</code> time in the column <code> Column</code> 
-  */
- private int getF_i(int frequency)
- {int f_i=0;
- for (Object2IntMap.Entry<String> entry:Frequencymap.object2IntEntrySet())
- {int freq=entry.getIntValue();
-     if(freq==frequency)
-       f_i++;
- }
- return f_i;
- }
 }

@@ -1,5 +1,5 @@
 
-# Single Column Profiling Algorithms:
+# Single Column Profiling Algorithms
 The research area of data profiling includes a large set of methods and processes to examine a given dataset and determine metadata about it ([1](https://hpi.de/fileadmin/user_upload/fachgebiete/naumann/publications/2013/profiling_vision.pdf)). Typically, the results comprise various statistics about the columns and the relationships among them, in particular dependencies. Among the basic
 statistics about a column are data type, the number of unique values, maximum and minimum values, the number of null values, and the value distribution.
 
@@ -13,7 +13,7 @@ It collects the following statistics about each column of the input dataset (*.c
 * Min, Max, Standard deviation, Average
 * ...
 
-### Cardinality estimation algorithms (projects starts with DV): 
+### Cardinality estimation algorithms (projects starts with DV) 
 
 This part contains the implementaion code for [repetability](https://hpi.de/naumann/projects/repeatability/data-profiling/cardinality-estimation.html) of the experiments in my publication:
 ```
@@ -41,7 +41,7 @@ In addition to:
 ## Metanome Tool and Profiling Algorithms
 [Metanome](www.metanome.de) is a framework that handles both algorithms and datasets as external resources. All the algorithms above have been developed to work within Metanome.
 
-### Run the algorithms using Metanome GUI:
+### Run the algorithms using Metanome GUI
 
 1. Download latest release of Metanome from [Metanome releases page](https://github.com/HPI-Information-Systems/Metanome/releases) as well as
 the algorithms from the [Algorithm releases page](https://hpi.de/naumann/projects/data-profiling-and-analytics/metanome-data-profiling/algorithms.html). 
@@ -51,7 +51,7 @@ the algorithms from the [Algorithm releases page](https://hpi.de/naumann/project
 6. Open a browser at http://localhost:8080/ and register both the algorithm and the dataset in the Metanome frontend
 7. Choose the algorithm and datasource, setting parameter and then run!
 
-### Development:
+### Development
 
 MetanomeTestRunner: is a project to run the algorithms in development phase. As it is a MVN project all the required Metanome libraries will be automatically downloaded.
 If you want to build your own algorithm, give it a look [here](https://github.com/HPI-Information-Systems/metanome-algorithms).

@@ -1,5 +1,5 @@
 
-# Single Column Profiling Algorithms
+<!---# Single Column Profiling Algorithms
 The research area of data profiling includes a large set of methods and processes to examine a given dataset and determine metadata about it ([1](https://hpi.de/fileadmin/user_upload/fachgebiete/naumann/publications/2013/profiling_vision.pdf)). Typically, the results comprise various statistics about the columns and the relationships among them, in particular dependencies. Among the basic
 statistics about a column are data type, the number of unique values, maximum and minimum values, the number of null values, and the value distribution.
 
@@ -11,11 +11,11 @@ It collects the following statistics about each column of the input dataset (*.c
 * Number and percentage of Nulls
 * Top 10 frequent items	and their frequencies.
 * Min, Max, Standard deviation, Average
-* ...
+* ...-->
 
-### Cardinality estimation algorithms (projects starts with DV) 
+# Cardinality estimation algorithms <!---(projects starts with DV) -->
 
-This part contains the implementaion code for [repetability](https://hpi.de/naumann/projects/repeatability/data-profiling/cardinality-estimation.html) of the experiments in my publication:
+This repository contains the implementaion code for [repetability](https://hpi.de/naumann/projects/repeatability/data-profiling/cardinality-estimation.html) of the experiments in my publication:
 ```
 Harmouch, H., Naumann, F.: Cardinality Estimation: An Experimental Survey. Proceedings of the VLDB Endowment (PVLDB). pp. 499 - 512 (2017).
 ```

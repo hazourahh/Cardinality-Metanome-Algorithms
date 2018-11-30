@@ -101,7 +101,7 @@
 			<artifactId>DVPCSA</artifactId>
 			<version>1.1-SNAPSHOT</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>de.metanome.algorithms.dvsuperloglog</groupId>
 			<artifactId>DVSuperLogLog</artifactId>
 			<version>1.1-SNAPSHOT</version>
@@ -117,14 +117,12 @@
 			<version>1.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>de.metanome</groupId>
 			<artifactId>algorithm_helper</artifactId>
 			<version>1.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>de.metanome</groupId>
 			<artifactId>backend</artifactId>

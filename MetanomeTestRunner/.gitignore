@@ -1,3 +1,6 @@
 /target/
 /io/
 /data/
+/.settings/
+.project
+.classpath

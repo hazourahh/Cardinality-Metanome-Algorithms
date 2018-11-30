@@ -3,7 +3,7 @@ package de.uni_potsdam.hpi.metanome_test_runner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Random;
+
 
 import de.uni_potsdam.hpi.metanome_test_runner.config.Config;
 import de.uni_potsdam.hpi.metanome_test_runner.utils.*;
@@ -12,15 +12,19 @@ import de.uni_potsdam.hpi.metanome_test_runner.utils.*;
 public class Main {
 
   public static void main(String[] args) {
-   MetanomeTestRunner.run();
-    //MetanomeTestRunner.run(args);
 
-   //generate();
-   //generate_withrepetaion();
+  System.out.println("Please read the comments in Main method and be sure to follow the preprocessing steps...");
+//uncomment to generate syntatic datasets
+//generate();
+
+ //before uncommenting this be sure to do the preprocessing steps to get the realworld datasets ready and in place
+ // MetanomeTestRunner.run();
 
   }
 
-
+  /**
+   * Generate the Syntatic datasets
+   */
   static void generate() {
     Config conf = new Config();
     ArrayList<Long> cardinality = new ArrayList<>();
